@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name" translatable="false">Widgets</string>
+    <string name="search">Search…</string>
+    <string name="call">call</string>
+    <string name="direction">direction</string>
+
+    <string name="record_address" translatable="false">%1$s, %2$s</string>
+    <string name="record_opening_hours_open_now">Open now until %1$s</string>
+    <string name="record_opening_hours_closed">CLOSED. Opens %1$s at %2$s</string>
+</resources>

@@ -1,0 +1,2 @@
+include ':app', ':clinia-widgets'
+rootProject.name='Widgets'

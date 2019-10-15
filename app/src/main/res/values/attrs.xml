@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SearchBar">
+        <attr name="hint" format="string"/>
+        <attr name="locationHint" format="string"/>
+        <attr name="tint" format="color"/>
+    </declare-styleable>
+</resources>

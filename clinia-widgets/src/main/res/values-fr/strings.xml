@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search">Search…</string>
+    <string name="call">call</string>
+    <string name="direction">direction</string>
+    <string name="record_opening_hours_closed">FERMÉ. Ouvre %1$s à %2$s</string>
+    <string name="record_opening_hours_open_now">Ouvert jusqu\'à  %1$s</string>
+</resources>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/searchInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/searchEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_small"
+            android:textSize="@dimen/font_large"
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="@dimen/spacing_tiny"
+            android:drawableTint="@color/colorAccent"
+            android:importantForAutofill="no"
+            android:maxLines="1"
+            android:inputType="textAutoComplete"
+            android:imeOptions="actionSearch"
+            android:background="@drawable/edit_text_background"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/locationInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_small">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/locationEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_small"
+            android:textSize="@dimen/font_large"
+            android:drawableStart="@drawable/ic_my_location"
+            android:drawablePadding="@dimen/spacing_tiny"
+            android:drawableTint="@color/colorAccent"
+            android:textColorHint="@color/colorAccent"
+            android:importantForAutofill="no"
+            android:maxLines="1"
+            android:inputType="textAutoComplete"
+            android:imeOptions="actionSearch"
+            android:background="@drawable/edit_text_background"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>
