@@ -11,23 +11,22 @@ import retrofit2.Response
 
 class SearchDataRepository {
 
-    fun getSearchData(query: String?, currentPage: Int?, perPage: Int?): LiveData<SearchResponse> {
+    fun getSearchData(requestBody: SearchRequestBody): LiveData<SearchResponse> {
         val data = MutableLiveData<SearchResponse>()
         //get clinics network call
-        NetworkManager.searchService.listClinics(SearchRequestBody(query, currentPage, perPage)).enqueue(object : Callback<SearchResponse> {
+        NetworkManager.searchService.listClinics(requestBody).enqueue(object : Callback<SearchResponse> {
             override fun onFailure(call: Call<SearchResponse>?, t: Throwable?) {
-                print(call?.request()?.body())
+                t?.let { Log.e(this.javaClass.simpleName, "onFailure message: ${t.message}") }
             }
 
             override fun onResponse(call: Call<SearchResponse>?, response: Response<SearchResponse>?) {
-                if (response?.isSuccessful!!) {
-                    data.postValue(response.body())
-                }
-                else {
-                    Log.e(this.javaClass.simpleName, "")
+                response?.let {
+                    if (it.isSuccessful)
+                        data.postValue(it.body())
+                    else
+                        Log.e(this.javaClass.simpleName, "Request failed with error ${it.code()}: ${it.errorBody()}")
                 }
             }
-
         })
         return data
     }

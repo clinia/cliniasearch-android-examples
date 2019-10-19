@@ -2,6 +2,7 @@ package com.clinia.widgets.data
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.util.*
 
 @JsonClass(generateAdapter = true)
 data class Records(
@@ -15,7 +16,18 @@ data class Records(
     val onlineBookingUrl: String?,
     val distance: Float?,
     val openingHours: OpeningHours?
-)
+) {
+    fun getTodayHours(): List<DailyHours>? = when (Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) {
+        Calendar.MONDAY -> openingHours?.monday
+        Calendar.TUESDAY -> openingHours?.tuesday
+        Calendar.WEDNESDAY -> openingHours?.wednesday
+        Calendar.THURSDAY -> openingHours?.thursday
+        Calendar.FRIDAY -> openingHours?.friday
+        Calendar.SATURDAY -> openingHours?.saturday
+        Calendar.SUNDAY -> openingHours?.sunday
+        else -> null
+    }
+}
 
 @JsonClass(generateAdapter = true)
 data class Address(

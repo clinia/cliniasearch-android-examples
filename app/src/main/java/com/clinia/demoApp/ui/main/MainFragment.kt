@@ -1,10 +1,13 @@
 package com.clinia.demoApp.ui.main
 
+import android.app.Activity
+import android.location.Location
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,11 +15,13 @@ import com.clinia.widgets.R
 import com.clinia.widgets.ui.main.MainViewModel
 import com.clinia.widgets.ui.view.ResultAdapter
 import com.clinia.widgets.ui.view.SearchBar
+import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : Fragment(), SearchBar.SearchListener {
 
     private lateinit var viewModel: MainViewModel
+    private var lastLocation: Location? = null
 
     private var adapter: ResultAdapter? = null
 
@@ -30,6 +35,10 @@ class MainFragment : Fragment(), SearchBar.SearchListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        LocationServices.getFusedLocationProviderClient(context as Activity)
+        .lastLocation.addOnSuccessListener {
+            lastLocation = it
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,10 +51,15 @@ class MainFragment : Fragment(), SearchBar.SearchListener {
         }
     }
 
-    override fun search(query: String) {
-        viewModel.getSearchData(query, null, null).observe(this, Observer {
-            adapter?.setData(it.records)
-        })
+    override fun search(query: String, location: String) {
+        if (location.isBlank() or location.isEmpty())
+            viewModel.getSearchData(query, lastLocation).observe(this, Observer {
+                adapter?.setData(it.records)
+            })
+        else
+            viewModel.getSearchData(query, location).observe(this, Observer {
+                adapter?.setData(it.records)
+            })
     }
 
     companion object {

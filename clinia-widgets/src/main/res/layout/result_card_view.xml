@@ -31,6 +31,8 @@
             style="@style/TextResultDistance"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            tools:visibility="visible"
             tools:text="3.2 km"/>
 
         <TextView

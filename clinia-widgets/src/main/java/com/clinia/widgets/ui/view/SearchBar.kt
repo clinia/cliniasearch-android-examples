@@ -16,7 +16,7 @@ class SearchBar @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
     private fun getQuery() = if (searchEditText?.text.isNullOrEmpty()) "" else  searchEditText?.text.toString()
-    val location = locationEditText?.text.toString()
+    private fun getLocation() = if (locationEditText?.text.isNullOrEmpty()) "" else locationEditText?.text.toString()
 
     lateinit var searchListener: SearchListener
 
@@ -33,12 +33,17 @@ class SearchBar @JvmOverloads constructor(
         }
         searchEditText.setOnEditorActionListener { _, p1, _ ->
             if (p1 == EditorInfo.IME_ACTION_SEARCH)
-                searchListener.search(getQuery())
+                searchListener.search(getQuery(), getLocation())
+            false
+        }
+        locationEditText.setOnEditorActionListener { _, p1, _ ->
+            if (p1 == EditorInfo.IME_ACTION_SEARCH)
+                searchListener.search(getQuery(), getLocation())
             false
         }
     }
 
     interface SearchListener {
-        fun search(query: String)
+        fun search(query: String, location: String)
     }
 }

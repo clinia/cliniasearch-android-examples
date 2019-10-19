@@ -1,11 +1,15 @@
 package com.clinia.widgets.ui.view
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.view.size
 import androidx.recyclerview.widget.RecyclerView
 import com.clinia.widgets.R
 import com.clinia.widgets.data.Records
@@ -39,7 +43,10 @@ class ResultAdapter(private val context: Context, private var data: MutableList<
 //        setAttributes(holder)
 
         holder.resultCard.type.text = data[position].type
-        holder.resultCard.distance.text = data[position].distance.toString()
+        data[position].distance?.let {
+            holder.resultCard.distance.text = it.toString()
+            holder.resultCard.distance.visibility = View.VISIBLE
+        }
         holder.resultCard.name.text = data[position].name
         holder.resultCard.address.text =
             context.getString(
@@ -47,13 +54,31 @@ class ResultAdapter(private val context: Context, private var data: MutableList<
                 data[position].address?.streetAddress,
                 data[position].address?.place
             )
-        holder.resultCard.openingHours.text =
-            "Open now until ${data[position].openingHours?.monday}"
+        if (data[position].getTodayHours().isNullOrEmpty())
+            holder.resultCard.openingHours.text = "---"
+        data[position].getTodayHours()?.let {
+            //TODO complete the opening hours logic
+            holder.resultCard.openingHours.text =
+                if (it.isEmpty()) "Closed today" else "Open now until ${it.last()?.end}"
+        }
+
         holder.resultCard.directionsBtn.setOnClickListener {
             //maps intent using geopoint
+            data[position].geoPoint?.let {
+                val gmmIntentUri = Uri.parse("google.navigation:q=${it.latitude}, ${it.longitude}")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                context.startActivity(mapIntent)
+            }
         }
         holder.resultCard.callBtn.setOnClickListener {
-            //phone intent using phone number
+            val phoneNumber = data[position].phones.first().number
+            val intent = Intent(Intent.ACTION_DIAL).apply {
+                data = Uri.parse("tel:$phoneNumber")
+            }
+            if (intent.resolveActivity(context.packageManager) != null) {
+                context.startActivity(intent)
+            }
         }
     }
 
