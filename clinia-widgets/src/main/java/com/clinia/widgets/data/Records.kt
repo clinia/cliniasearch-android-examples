@@ -3,6 +3,7 @@ package com.clinia.widgets.data
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.util.*
+import java.text.SimpleDateFormat
 
 @JsonClass(generateAdapter = true)
 data class Records(
@@ -17,7 +18,13 @@ data class Records(
     val distance: Float?,
     val openingHours: OpeningHours?
 ) {
-    fun getTodayHours(): List<DailyHours>? = when (Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) {
+    private fun getHours(): List<DailyHours>? =
+        if (getTodayHours() == null) getDailyHours(Calendar.getInstance().get(Calendar.DAY_OF_WEEK))
+        else getTodayHours()
+
+    private fun getTodayHours() = getDailyHours(Calendar.getInstance().get(Calendar.DAY_OF_WEEK))
+
+    private fun getDailyHours(day: Int): List<DailyHours>? = when (day) {
         Calendar.MONDAY -> openingHours?.monday
         Calendar.TUESDAY -> openingHours?.tuesday
         Calendar.WEDNESDAY -> openingHours?.wednesday
@@ -26,6 +33,53 @@ data class Records(
         Calendar.SATURDAY -> openingHours?.saturday
         Calendar.SUNDAY -> openingHours?.sunday
         else -> null
+    }
+
+    private fun getCurrentInterval(hours: List<DailyHours>): DailyHours? {
+        if (hours.size == 1) return  hours.first()
+        else for (hour in hours)
+            if (hour.isOpenAtTime(Calendar.getInstance().time))
+                return hour
+        return null
+    }
+
+    private fun getNextInterval(hours: List<DailyHours>): DailyHours? {
+        if (hours.size == 1) return  null
+        else for (hour in hours)
+            if (hour.isOpenAtTime(Calendar.getInstance().time))
+                return hour
+        return null
+    }
+
+    val isOpen = true
+
+    /*
+    Closed now
+    Open 24h today
+    Open now. Closes at 12:00
+    Closed now. Opens at 10:00 (edited)
+    Open now. 9:00–12:00, 13:00–18:00
+    */
+    fun getFormattedHours(): String {
+        getHours()?.let {
+            if (it.isEmpty()) return "Closed now"
+            else if (it[0].start == "00:00" && it[0].end == "0:00") return "Open 24h today"
+            else if (isOpen) {
+                if (it.size > 1) {
+                    getCurrentInterval(it)?.let { hours ->
+                        return ("Open now. ${hours.start}-${hours.end}")
+                    }
+                } else {
+                    return ("Open now. Closes at ${it.first().end}")
+                }
+            } else {
+                getNextInterval(it)?.let { hours ->
+                    return ("Closed now. Opens at ${hours.start}")
+                }
+            }
+
+        }
+        return "Closed"
     }
 }
 
@@ -71,4 +125,17 @@ data class OpeningHours(
 data class DailyHours(
     val start: String,
     val end: String
-)
+) {
+
+    fun isOpenAtTime(time: Date): Boolean {
+        val calendarStart = Calendar.getInstance()
+        calendarStart.time = SimpleDateFormat("HH:mm").parse(start)
+        calendarStart.add(Calendar.DATE, 1)
+
+        val calendarEnd = Calendar.getInstance()
+        calendarEnd.time = SimpleDateFormat("HH:mm").parse(start)
+        calendarEnd.add(Calendar.DATE, 1)
+
+        return time.after(calendarStart.time) && time.before(calendarEnd.time)
+    }
+}

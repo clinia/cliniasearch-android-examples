@@ -13,10 +13,10 @@ class MainViewModel: ViewModel() {
 
     private val dataRepository: SearchDataRepository = SearchDataRepository()
 
-    //TODO: refactor to use this getter in main activity
-    private val _data = MutableLiveData<SearchResponse>()
-    val response : LiveData<SearchResponse>
-    get() = _data
+//    //TODO: refactor to use this getter in main activity
+//    private val _data = MutableLiveData<SearchResponse>()
+//    val response : LiveData<SearchResponse>
+//    get() = _data
 
     fun getSearchData(query: String?, location: Location?): LiveData<SearchResponse> {
         val search = SearchRequestBody(query)

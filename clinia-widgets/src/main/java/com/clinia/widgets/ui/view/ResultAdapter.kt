@@ -54,13 +54,12 @@ class ResultAdapter(private val context: Context, private var data: MutableList<
                 data[position].address?.streetAddress,
                 data[position].address?.place
             )
-        if (data[position].getTodayHours().isNullOrEmpty())
-            holder.resultCard.openingHours.text = "---"
-        data[position].getTodayHours()?.let {
-            //TODO complete the opening hours logic
-            holder.resultCard.openingHours.text =
-                if (it.isEmpty()) "Closed today" else "Open now until ${it.last()?.end}"
+        if (data[position].isOpen) {
+            holder.resultCard.openingHours.visibility = View.VISIBLE
+            holder.resultCard.openingHours.text = data[position].getFormattedHours()
         }
+        else
+            holder.resultCard.openingHours.visibility = View.INVISIBLE
 
         holder.resultCard.directionsBtn.setOnClickListener {
             //maps intent using geopoint
