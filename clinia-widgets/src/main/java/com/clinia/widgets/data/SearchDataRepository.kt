@@ -11,7 +11,7 @@ import retrofit2.Response
 
 class SearchDataRepository {
 
-    fun getSearchData(requestBody: SearchRequestBody): LiveData<SearchResponse> {
+    fun getSearchData(requestBody: SearchRequestBody): MutableLiveData<SearchResponse> {
         val data = MutableLiveData<SearchResponse>()
         //get clinics network call
         NetworkManager.searchService.listClinics(requestBody).enqueue(object : Callback<SearchResponse> {

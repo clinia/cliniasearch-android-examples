@@ -14,7 +14,7 @@ class MainViewModel: ViewModel() {
 
     private val dataRepository: SearchDataRepository = SearchDataRepository()
 
-    private val searchData = MutableLiveData<SearchResponse>()
+    private var searchData = MutableLiveData<SearchResponse>()
 
     //call this method to get the data
     fun getSearchData(query: String?, location: Location?): LiveData<SearchResponse> {
@@ -37,7 +37,7 @@ class MainViewModel: ViewModel() {
     }
 
     private fun loadData(search: SearchRequestBody) {
-        searchData.value = dataRepository.getSearchData(search).value
+        searchData = dataRepository.getSearchData(search)
     }
 
 }
