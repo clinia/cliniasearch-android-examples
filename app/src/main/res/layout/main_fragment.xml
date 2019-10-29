@@ -11,24 +11,36 @@
         android:id="@+id/searchBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:hint="Rechercher une clinique, specialiste, etc."
-        app:locationHint="Current Location"
-        app:tint="@color/colorAccent"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:padding="@dimen/spacing_normal"
+        app:hint="Rechercher une clinique, specialiste, etc."
+        app:layout_constraintBottom_toTopOf="@id/resultsList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/resultsList"/>
+        app:locationHint="Current Location"
+        app:tint="@color/colorAccent" />
 
     <com.clinia.widgets.ui.view.ResultsList
         android:id="@+id/resultsList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:titleTextColor="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchBar"/>
+        app:layout_constraintTop_toBottomOf="@id/searchBar"
+        app:titleTextColor="@color/colorPrimary"
+        tools:listitem="@layout/result_card_view" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        style="@style/Widget.MaterialComponents.FloatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:padding="@dimen/spacing_small"
+        android:src="@drawable/ic_map"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
