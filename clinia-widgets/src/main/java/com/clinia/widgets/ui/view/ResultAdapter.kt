@@ -8,8 +8,6 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
-import androidx.core.view.size
 import androidx.recyclerview.widget.RecyclerView
 import com.clinia.widgets.R
 import com.clinia.widgets.data.Records

@@ -3,6 +3,7 @@ package com.clinia.widgets.ui.main
 import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.clinia.widgets.data.SearchResponse
 import com.clinia.widgets.data.SearchDataRepository
@@ -13,25 +14,30 @@ class MainViewModel: ViewModel() {
 
     private val dataRepository: SearchDataRepository = SearchDataRepository()
 
-//    //TODO: refactor to use this getter in main activity
-//    private val _data = MutableLiveData<SearchResponse>()
-//    val response : LiveData<SearchResponse>
-//    get() = _data
+    private val searchData = MutableLiveData<SearchResponse>()
 
+    //call this method to get the data
     fun getSearchData(query: String?, location: Location?): LiveData<SearchResponse> {
         val search = SearchRequestBody(query)
         location?.let {
             search.filters = Filters("${it.latitude}, ${it.longitude}")
         }
-        return dataRepository.getSearchData(search)
+        loadData(search)
+        return searchData
     }
 
+    //call this method to get the data
     fun getSearchData(query: String?, location: String?): LiveData<SearchResponse> {
         val search = SearchRequestBody(query)
         location?.let {
             search.filters = Filters(location)
         }
-        return dataRepository.getSearchData(search)
+        loadData(search)
+        return searchData
+    }
+
+    private fun loadData(search: SearchRequestBody) {
+        searchData.value = dataRepository.getSearchData(search).value
     }
 
 }
