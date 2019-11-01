@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/searchInputLayout"
@@ -11,19 +11,19 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/searchEditText"
+            style="@style/AppTheme.SearchBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/spacing_small"
-            android:textSize="@dimen/font_large"
+            android:background="@drawable/edit_text_background"
             android:drawableStart="@drawable/ic_search"
             android:drawablePadding="@dimen/spacing_tiny"
             android:drawableTint="@color/colorAccent"
-            android:importantForAutofill="no"
-            android:maxLines="1"
-            android:inputType="textAutoComplete"
             android:imeOptions="actionSearch"
-            android:background="@drawable/edit_text_background"
-            />
+            android:importantForAutofill="no"
+            android:inputType="textAutoComplete"
+            android:maxLines="1"
+            android:padding="@dimen/spacing_small"
+            android:textSize="@dimen/font_large" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -34,19 +34,19 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/locationEditText"
+            style="@style/AppTheme.SearchBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/spacing_small"
-            android:textSize="@dimen/font_large"
+            android:background="@drawable/edit_text_background"
             android:drawableStart="@drawable/ic_my_location"
             android:drawablePadding="@dimen/spacing_tiny"
             android:drawableTint="@color/colorAccent"
-            android:textColorHint="@color/colorAccent"
-            android:importantForAutofill="no"
-            android:maxLines="1"
-            android:inputType="textAutoComplete"
             android:imeOptions="actionSearch"
-            android:background="@drawable/edit_text_background"
-            />
+            android:importantForAutofill="no"
+            android:inputType="textAutoComplete"
+            android:maxLines="1"
+            android:padding="@dimen/spacing_small"
+            android:textColorHint="@color/colorAccent"
+            android:textSize="@dimen/font_large" />
     </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

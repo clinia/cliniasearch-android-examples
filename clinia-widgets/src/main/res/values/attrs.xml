@@ -4,6 +4,16 @@
         <attr name="hint" format="string"/>
         <attr name="locationHint" format="string"/>
         <attr name="tint" format="color"/>
+        <attr name="searchInput" format="enum">
+            <enum name="hide" value="0" />
+            <enum name="optional" value="1" />
+            <enum name="required" value="2" />
+        </attr>
+        <attr name="locationInput" format="enum">
+            <enum name="hide" value="0" />
+            <enum name="optional" value="1" />
+            <enum name="required" value="2" />
+        </attr>
     </declare-styleable>
 
     <declare-styleable name="ResultsList">
