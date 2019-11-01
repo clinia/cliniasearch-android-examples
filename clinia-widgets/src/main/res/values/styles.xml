@@ -8,6 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.SearchBar" parent="Widget.AppCompat.EditText">
+        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
+    </style>
+
     <style name="TextResultTitle" parent="TextAppearance.AppCompat.Headline">
         <item name="android:textSize">@dimen/font_xlarge</item>
         <item name="android:textColor">@color/darkBlue</item>

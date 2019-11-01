@@ -1,7 +1,5 @@
 package com.clinia.demoApp.ui.main
 
-import android.app.Activity
-import android.location.Location
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,13 +12,11 @@ import com.clinia.widgets.R
 import com.clinia.widgets.ui.main.MainViewModel
 import com.clinia.widgets.ui.view.ResultAdapter
 import com.clinia.widgets.ui.view.SearchBar
-import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.main_fragment.*
 
-class MainFragment : Fragment(), SearchBar.SearchListener {
+class MainFragment : Fragment(), SearchBar.SearchBarListener {
 
     private lateinit var viewModel: MainViewModel
-    private var lastLocation: Location? = null
 
     private var adapter: ResultAdapter? = null
 
@@ -34,10 +30,6 @@ class MainFragment : Fragment(), SearchBar.SearchListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        LocationServices.getFusedLocationProviderClient(context as Activity)
-        .lastLocation.addOnSuccessListener {
-            lastLocation = it
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,17 +40,29 @@ class MainFragment : Fragment(), SearchBar.SearchListener {
             resultsList.adapter = adapter
             resultsList.layoutManager = LinearLayoutManager(activity)
         }
+//        fab.setOnClickListener(mapView.visibility = View.VISIBLE)
     }
 
-    override fun search(query: String, location: String) {
-        if (location.isBlank() or location.isEmpty())
-            viewModel.getSearchData(query, lastLocation).observe(this, Observer {
+    override fun onEnter(query: String, location: String) {
+        viewModel.getSearchData(query, location).observe(this, Observer {
                 adapter?.setData(it.records)
-            })
-        else
-            viewModel.getSearchData(query, location).observe(this, Observer {
-                adapter?.setData(it.records)
-            })
+        })
+    }
+
+    override fun onAutoCompleteSelect() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onTextChange() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onResult() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onError() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     companion object {
