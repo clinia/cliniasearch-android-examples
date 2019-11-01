@@ -98,8 +98,8 @@ data class Address(
 
 @JsonClass(generateAdapter = true)
 data class GeoPoint(
-    val latitude: Float,
-    val longitude: Float
+    val lat: Float,
+    val lng: Float
 )
 
 @JsonClass(generateAdapter = true)
@@ -129,11 +129,11 @@ data class DailyHours(
 
     fun isOpenAtTime(time: Date): Boolean {
         val calendarStart = Calendar.getInstance()
-        calendarStart.time = SimpleDateFormat("HH:mm").parse(start)
+        calendarStart.time = SimpleDateFormat("H:mm").parse(start)!!
         calendarStart.add(Calendar.DATE, 1)
 
         val calendarEnd = Calendar.getInstance()
-        calendarEnd.time = SimpleDateFormat("HH:mm").parse(start)
+        calendarEnd.time = SimpleDateFormat("H:mm").parse(start)!!
         calendarEnd.add(Calendar.DATE, 1)
 
         return time.after(calendarStart.time) && time.before(calendarEnd.time)

@@ -62,7 +62,7 @@ class ResultAdapter(private val context: Context, private var data: MutableList<
         holder.resultCard.directionsBtn.setOnClickListener {
             //maps intent using geopoint
             data[position].geoPoint?.let {
-                val gmmIntentUri = Uri.parse("google.navigation:q=${it.latitude}, ${it.longitude}")
+                val gmmIntentUri = Uri.parse("google.navigation:q=${it.lat}, ${it.lng}")
                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                 mapIntent.setPackage("com.google.android.apps.maps")
                 context.startActivity(mapIntent)

@@ -26,7 +26,9 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     //call this method to get the data
     fun getSearchData(query: String, location: String): LiveData<SearchResponse>{
         return if (location.isBlank() or location.isEmpty()) {
-            search(query, lastLocation)
+            //TODO: change to coordinates when backend supports it
+//            search(query, lastLocation)
+            search(query, location)
         } else {
             search(query, location)
         }
