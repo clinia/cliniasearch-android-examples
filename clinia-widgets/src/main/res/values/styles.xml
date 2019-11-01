@@ -8,9 +8,15 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.SearchBar" parent="Widget.AppCompat.EditText">
-        <item name="colorControlActivated">@color/colorPrimary</item>
-        <item name="colorControlNormal">@color/colorPrimary</item>
+    <style name="AppTheme.SearchBar" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxBackgroundColor">@android:color/white</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
+        <item name="boxStrokeColor">@color/lightGray</item>
+        <item name="android:colorFocusedHighlight">@color/lightGray</item>
+        <item name="startIconTint">@color/colorPrimary</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="TextResultTitle" parent="TextAppearance.AppCompat.Headline">
