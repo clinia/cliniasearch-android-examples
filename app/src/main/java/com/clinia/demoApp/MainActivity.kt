@@ -1,7 +1,7 @@
 package com.clinia.demoApp
 
 import android.Manifest
-import android.app.Activity
+import android.app.FragmentManager
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.clinia.demoApp.ui.main.MainFragment
 import com.clinia.widgets.R
 import com.clinia.widgets.ui.main.MainViewModel
+import com.clinia.widgets.ui.view.ResultsMapFragment
+import kotlinx.android.synthetic.main.main_activity.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,6 +35,11 @@ class MainActivity : AppCompatActivity() {
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                     1)
         }
-    }
 
+        fab.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container, ResultsMapFragment.newInstance())
+                .commit()
+        }
+    }
 }

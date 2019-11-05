@@ -33,11 +33,6 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        resultsMap.onCreate(null)
-        resultsMap.getMapAsync{
-            it.setMinZoomPreference(12f)
-            it.moveCamera(CameraUpdateFactory.newLatLng(LatLng(45.5303026, -73.565657)))
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,9 +42,6 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener {
             adapter = ResultAdapter(it, mutableListOf())
             resultsList.adapter = adapter
             resultsList.layoutManager = LinearLayoutManager(activity)
-        }
-        fab.setOnClickListener {
-            resultsMap.visibility = if (resultsMap.isVisible) View.GONE else View.VISIBLE
         }
     }
 
