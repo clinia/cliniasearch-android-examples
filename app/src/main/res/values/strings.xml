@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name" translatable="false">Clinia</string>
-    <string name="search">Search...</string>
+    <string name="search">Search…</string>
+    <string name="google_android_map_api_key" translatable="false">AIzaSyCi1u2NRhoPKQJOz4jwWbRfuLy31Pm0F-w</string>
 </resources>
