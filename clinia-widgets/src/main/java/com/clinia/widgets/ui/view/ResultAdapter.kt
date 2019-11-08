@@ -55,8 +55,7 @@ class ResultAdapter(private val context: Context, private var data: MutableList<
         if (data[position].isOpen) {
             holder.resultCard.openingHours.visibility = View.VISIBLE
             holder.resultCard.openingHours.text = data[position].getFormattedHours()
-        }
-        else
+        } else
             holder.resultCard.openingHours.visibility = View.INVISIBLE
 
         holder.resultCard.directionsBtn.setOnClickListener {
@@ -68,6 +67,8 @@ class ResultAdapter(private val context: Context, private var data: MutableList<
                 context.startActivity(mapIntent)
             }
         }
+        holder.resultCard.callBtn.visibility =
+            if (data[position].phones.isNullOrEmpty()) View.GONE else View.VISIBLE
         holder.resultCard.callBtn.setOnClickListener {
             val phoneNumber = data[position].phones.first().number
             val intent = Intent(Intent.ACTION_DIAL).apply {

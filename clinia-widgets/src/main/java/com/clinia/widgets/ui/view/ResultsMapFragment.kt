@@ -61,7 +61,7 @@ class ResultsMapFragment: Fragment(), OnMapReadyCallback{
         map?.isMyLocationEnabled = true
 
         map?.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.mapstyle))
-        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(45.5, -73.56), 15f))
+        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(45.530243, -73.565260), 13f))
 
         //TODO: add markers
     }
