@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -15,6 +16,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import kotlinx.android.synthetic.main.results_map.*
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 
 
 class ResultsMapFragment: Fragment(), OnMapReadyCallback{
@@ -42,13 +44,14 @@ class ResultsMapFragment: Fragment(), OnMapReadyCallback{
         }
         resultsMap.onCreate(savedInstanceState)
         resultsMap.getMapAsync(this)
+
         //TODO: reuse query and location from searchBar
         viewModel.getSearchData("", "").observe(this, Observer {
             adapter?.setData(it.records)
         })
 //
 //        fab.setOnClickListener{
-//            resultsList.visibility = if (resultsList.isVisible) View.GONE else View.VISIBLE
+////            resultsList.visibility = if (resultsList.isVisible) View.GONE else View.VISIBLE
 //        }
     }
 
@@ -57,7 +60,15 @@ class ResultsMapFragment: Fragment(), OnMapReadyCallback{
         map?.uiSettings?.isMyLocationButtonEnabled = false
         map?.isMyLocationEnabled = true
 
-        map?.moveCamera(CameraUpdateFactory.newLatLng(LatLng(-45.5, -73.56)))
+        map?.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.mapstyle))
+        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(45.5, -73.56), 15f))
+
+        //TODO: add markers
+    }
+
+    override fun onResume() {
+        resultsMap.onResume()
+        super.onResume()
     }
 
     companion object {
