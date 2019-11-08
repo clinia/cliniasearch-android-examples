@@ -29,7 +29,6 @@ class ResultsMapFragment: Fragment(), OnMapReadyCallback{
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        resultsMap.onCreate(savedInstanceState)
         return inflater.inflate(R.layout.results_map, container, false)
     }
 
@@ -41,6 +40,8 @@ class ResultsMapFragment: Fragment(), OnMapReadyCallback{
             resultsList.adapter = adapter
             resultsList.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         }
+        resultsMap.onCreate(savedInstanceState)
+        resultsMap.getMapAsync(this)
         //TODO: reuse query and location from searchBar
         viewModel.getSearchData("", "").observe(this, Observer {
             adapter?.setData(it.records)
@@ -57,28 +58,6 @@ class ResultsMapFragment: Fragment(), OnMapReadyCallback{
         map?.isMyLocationEnabled = true
 
         map?.moveCamera(CameraUpdateFactory.newLatLng(LatLng(-45.5, -73.56)))
-    }
-
-
-    override fun onResume() {
-        resultsMap.onResume()
-        super.onResume()
-    }
-
-
-    override fun onPause() {
-        super.onPause()
-        resultsMap.onPause()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        resultsMap.onDestroy()
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        resultsMap.onLowMemory()
     }
 
     companion object {
