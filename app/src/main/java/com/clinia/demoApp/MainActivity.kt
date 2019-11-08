@@ -1,7 +1,6 @@
 package com.clinia.demoApp
 
 import android.Manifest
-import android.app.FragmentManager
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,7 +15,7 @@ import kotlinx.android.synthetic.main.main_activity.*
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,10 +35,21 @@ class MainActivity : AppCompatActivity() {
                     1)
         }
 
-        fab.setOnClickListener {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, ResultsMapFragment.newInstance())
-                .commit()
+        fab.setOnClickListener {f ->
+            supportFragmentManager.findFragmentById(R.id.container)?.let {
+                if (it.isVisible && it is ResultsMapFragment) {
+                    f.animate().translationY(0f)
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.container, MainFragment.newInstance())
+                        .commit()
+                }
+                else {
+                    f.animate().translationY(-520f)
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.container, ResultsMapFragment.newInstance())
+                        .commit()
+                }
+            }
         }
     }
 }
