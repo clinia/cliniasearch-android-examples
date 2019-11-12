@@ -45,19 +45,27 @@ class ResultAdapter(private val context: Context, private var data: MutableList<
             holder.resultCard.distance.text = it.toString()
             holder.resultCard.distance.visibility = View.VISIBLE
         }
-        holder.resultCard.name.text = data[position].name
-        holder.resultCard.address.text =
-            context.getString(
-                R.string.record_address,
-                data[position].address?.streetAddress,
-                data[position].address?.place
-            )
-        if (data[position].isOpen) {
+        data[position].name?.let {
+            holder.resultCard.name.text = it
+        }
+        data[position].address?.let {
+            holder.resultCard.address.text =
+                context.getString(
+                    R.string.record_address,
+                    it.streetAddress,
+                    it.place
+                )
+        }
+
+        if (data[position].getFormattedHours() != null) {
             holder.resultCard.openingHours.visibility = View.VISIBLE
             holder.resultCard.openingHours.text = data[position].getFormattedHours()
-        } else
+        } else {
             holder.resultCard.openingHours.visibility = View.INVISIBLE
+        }
 
+        holder.resultCard.directionsBtn.visibility =
+            if (data[position].phones.isNullOrEmpty()) View.GONE else View.VISIBLE
         holder.resultCard.directionsBtn.setOnClickListener {
             //maps intent using geopoint
             data[position].geoPoint?.let {
@@ -68,7 +76,7 @@ class ResultAdapter(private val context: Context, private var data: MutableList<
             }
         }
         holder.resultCard.callBtn.visibility =
-            if (data[position].phones.isNullOrEmpty()) View.GONE else View.VISIBLE
+            if (data[position].phones.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
         holder.resultCard.callBtn.setOnClickListener {
             val phoneNumber = data[position].phones.first().number
             val intent = Intent(Intent.ACTION_DIAL).apply {
