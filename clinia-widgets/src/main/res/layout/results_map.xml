@@ -13,18 +13,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--        android:id="@+id/fab"-->
-<!--        style="@style/Widget.MaterialComponents.FloatingActionButton"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="@dimen/activity_vertical_margin"-->
-<!--        android:layout_marginBottom="@dimen/spacing_xxxhuge"-->
-<!--        android:padding="@dimen/spacing_small"-->
-<!--        android:src="@drawable/ic_my_location"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/resultsList"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"/>-->
-
     <com.clinia.widgets.ui.view.ResultsList
         android:id="@+id/resultsList"
         android:layout_width="0dp"

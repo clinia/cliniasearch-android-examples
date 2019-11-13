@@ -33,7 +33,6 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener, LocationSearchBar.
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,13 +44,17 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener, LocationSearchBar.
             resultsList.adapter = adapter
             resultsList.layoutManager = LinearLayoutManager(activity)
         }
+        activity?.let {
+            viewModel = ViewModelProviders.of(it).get(MainViewModel::class.java)
+        }
+        viewModel.getSearchData().observe(this, Observer {
+            adapter?.setData(it.records)
+        })
     }
 
     override fun onSearchBarEnter(query: String) {
         viewModel.query = query
-        viewModel.getSearchData().observe(this, Observer {
-            adapter?.setData(it.records)
-        })
+        viewModel.search()
     }
 
     override fun onSearchBarTextChange() {
@@ -61,9 +64,7 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener, LocationSearchBar.
 
     override fun onLocationSearchBarEnter(location: String) {
         viewModel.locationQuery = location
-        viewModel.getSearchData().observe(this, Observer {
-            adapter?.setData(it.records)
-        })
+        viewModel.search()
     }
 
     override fun onLocationSearchBarTextChange() {

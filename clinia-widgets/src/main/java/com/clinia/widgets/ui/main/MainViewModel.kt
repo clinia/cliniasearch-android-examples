@@ -26,11 +26,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         search(query, lastLocation)
     }
 
-    //call this method to access the data
-    fun getSearchData(): LiveData<SearchResponse> {
+    //call this method to trigger a search with the saved parameters
+    fun search() {
         search(query, locationQuery)
-        return searchData
     }
+
+    //call this method to access the data
+    fun getSearchData(): LiveData<SearchResponse> = searchData
 
     private fun search(query: String?, location: Location?) {
         val search = SearchRequestBody(query)
@@ -40,7 +42,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         loadData(search)
     }
 
-    //call this method to get the data
     private fun search(query: String?, location: String?) {
         val search = SearchRequestBody(query)
         location?.let {

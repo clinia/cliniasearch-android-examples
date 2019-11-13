@@ -24,6 +24,8 @@ class ResultAdapter(private val context: Context, private var data: MutableList<
         notifyDataSetChanged()
     }
 
+    fun getIndex(records: Records) = data.indexOf(records)
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
