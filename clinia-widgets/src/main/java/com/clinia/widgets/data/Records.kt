@@ -2,6 +2,7 @@ package com.clinia.widgets.data
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.text.ParseException
 import java.util.*
 import java.text.SimpleDateFormat
 
@@ -53,6 +54,11 @@ data class Records(
 
     val isOpen = true
 
+    private fun isOpen(current: Date, startTime: String, endTime:String): Boolean {
+
+        return true
+//        return false
+    }
     /*
     Closed now
     Open 24h today
@@ -60,10 +66,10 @@ data class Records(
     Closed now. Opens at 10:00 (edited)
     Open now. 9:00–12:00, 13:00–18:00
     */
-    fun getFormattedHours(): String {
+    fun getFormattedHours(): String? {
         getHours()?.let {
             if (it.isEmpty()) return "Closed now"
-            else if (it[0].start == "00:00" && it[0].end == "0:00") return "Open 24h today"
+            else if (it[0].start == "00:00" && it[0].end == "00:00") return "Open 24h today"
             else if (isOpen) {
                 if (it.size > 1) {
                     getCurrentInterval(it)?.let { hours ->
@@ -79,7 +85,7 @@ data class Records(
             }
 
         }
-        return "Closed"
+        return null
     }
 }
 
@@ -129,11 +135,11 @@ data class DailyHours(
 
     fun isOpenAtTime(time: Date): Boolean {
         val calendarStart = Calendar.getInstance()
-        calendarStart.time = SimpleDateFormat("H:mm").parse(start)!!
+        calendarStart.time = SimpleDateFormat("H:mm", Locale.getDefault()).parse(start)!!
         calendarStart.add(Calendar.DATE, 1)
 
         val calendarEnd = Calendar.getInstance()
-        calendarEnd.time = SimpleDateFormat("H:mm").parse(start)!!
+        calendarEnd.time = SimpleDateFormat("H:mm", Locale.getDefault()).parse(start)!!
         calendarEnd.add(Calendar.DATE, 1)
 
         return time.after(calendarStart.time) && time.before(calendarEnd.time)
