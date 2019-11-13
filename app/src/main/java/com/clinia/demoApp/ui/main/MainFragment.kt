@@ -46,7 +46,9 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener {
     }
 
     override fun onEnter(query: String, location: String) {
-        viewModel.getSearchData(query, location).observe(this, Observer {
+        viewModel.query = query
+        viewModel.locationQuery = location
+        viewModel.getSearchData().observe(this, Observer {
                 adapter?.setData(it.records)
         })
     }
