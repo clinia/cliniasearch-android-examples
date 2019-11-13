@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -17,14 +16,16 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import kotlinx.android.synthetic.main.results_map.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.Marker
 
 
-class ResultsMapFragment: Fragment(), OnMapReadyCallback{
+class ResultsMapFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var viewModel: MainViewModel
     private var adapter: ResultAdapter? = null
 
-    private var map : GoogleMap? = null
+    private var map: GoogleMap? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,16 +41,29 @@ class ResultsMapFragment: Fragment(), OnMapReadyCallback{
         context?.let {
             adapter = ResultAdapter(it, mutableListOf())
             resultsList.adapter = adapter
-            resultsList.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            resultsList.layoutManager =
+                LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         }
         resultsMap.onCreate(savedInstanceState)
         resultsMap.getMapAsync(this)
 
         //TODO: reuse query and location from searchBar
-        viewModel.getSearchData("", "").observe(this, Observer {
+        viewModel.getSearchData().observe(this, Observer {
             adapter?.setData(it.records)
+            // Creating a marker
+            for (record in it.records) {
+                record.geoPoint?.let {
+                    val markerOptions = MarkerOptions()
+                        .position(
+                            LatLng(
+                                record.geoPoint.lat.toDouble(),
+                                record.geoPoint.lng.toDouble()
+                            )
+                        )
+                    map?.addMarker(markerOptions)
+                }
+            }
         })
-//
 //        fab.setOnClickListener{
 ////            resultsList.visibility = if (resultsList.isVisible) View.GONE else View.VISIBLE
 //        }
@@ -64,6 +78,24 @@ class ResultsMapFragment: Fragment(), OnMapReadyCallback{
         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(45.530243, -73.565260), 13f))
 
         //TODO: add markers
+    }
+
+    /** Called when the user clicks a marker.  */
+    fun onMarkerClick(marker: Marker): Boolean {
+
+        // Retrieve the data from the marker.
+        var clickCount = marker.tag as Int?
+
+        // Check if a click count was set, then display the click count.
+        if (clickCount != null) {
+            clickCount = clickCount + 1
+            marker.tag = clickCount
+        }
+
+        // Return false to indicate that we have not consumed the event and that we wish
+        // for the default behavior to occur (which is for the camera to move such that the
+        // marker is centered and for the marker's info window to open, if it has one).
+        return false
     }
 
     override fun onResume() {
