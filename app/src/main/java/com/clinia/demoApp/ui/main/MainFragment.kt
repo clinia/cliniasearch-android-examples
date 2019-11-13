@@ -11,13 +11,14 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.clinia.widgets.R
 import com.clinia.widgets.ui.main.MainViewModel
+import com.clinia.widgets.ui.view.LocationSearchBar
 import com.clinia.widgets.ui.view.ResultAdapter
 import com.clinia.widgets.ui.view.SearchBar
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.main_fragment.*
 
-class MainFragment : Fragment(), SearchBar.SearchBarListener {
+class MainFragment : Fragment(), SearchBar.SearchBarListener, LocationSearchBar.LocationSearchBarListener {
 
     private lateinit var viewModel: MainViewModel
 
@@ -37,7 +38,8 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        searchBar.searchListener = this
+        searchBar.listener = this
+        locationSearchBar.listener = this
         context?.let {
             adapter = ResultAdapter(it, mutableListOf())
             resultsList.adapter = adapter
@@ -45,29 +47,30 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener {
         }
     }
 
-    override fun onEnter(query: String, location: String) {
+    override fun onSearchBarEnter(query: String) {
         viewModel.query = query
-        viewModel.locationQuery = location
         viewModel.getSearchData().observe(this, Observer {
-                adapter?.setData(it.records)
+            adapter?.setData(it.records)
         })
     }
 
-    override fun onAutoCompleteSelect() {
+    override fun onSearchBarTextChange() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onTextChange() {
+
+    override fun onLocationSearchBarEnter(location: String) {
+        viewModel.locationQuery = location
+        viewModel.getSearchData().observe(this, Observer {
+            adapter?.setData(it.records)
+        })
+    }
+
+    override fun onLocationSearchBarTextChange() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onResult() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
-    override fun onError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
     companion object {
         fun newInstance() = MainFragment()

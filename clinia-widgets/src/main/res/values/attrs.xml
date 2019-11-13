@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="SearchBar">
-        <attr name="hint" format="string"/>
-        <attr name="locationHint" format="string"/>
+        <attr name="hintSearch" format="string"/>
         <attr name="tint" format="color"/>
-        <attr name="searchInput" format="enum">
-            <enum name="hide" value="0" />
+        <attr name="statusSearchBar" format="enum">
+            <enum name="hidden" value="0" />
             <enum name="optional" value="1" />
             <enum name="required" value="2" />
         </attr>
-        <attr name="locationInput" format="enum">
-            <enum name="hide" value="0" />
+    </declare-styleable>
+
+    <declare-styleable name="LocationSearchBar">
+        <attr name="hintLocation" format="string"/>
+        <attr name="tintLocation" format="color"/>
+        <attr name="statusLocationSearchBar" format="enum">
+            <enum name="hidden" value="0" />
             <enum name="optional" value="1" />
             <enum name="required" value="2" />
         </attr>

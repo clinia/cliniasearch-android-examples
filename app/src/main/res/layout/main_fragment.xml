@@ -13,15 +13,30 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        app:locationInput="optional"
-        android:padding="@dimen/spacing_normal"
-        app:hint="Rechercher une clinique, specialiste, etc."
-        app:layout_constraintBottom_toTopOf="@id/resultsList"
+        app:statusSearchBar="optional"
+        android:paddingStart="@dimen/spacing_normal"
+        android:paddingEnd="@dimen/spacing_normal"
+        app:hintSearch="Rechercher une clinique, specialiste, etc."
+        app:layout_constraintBottom_toTopOf="@id/locationSearchBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:locationHint="Current Location"
         app:tint="@color/colorAccent" />
+
+    <com.clinia.widgets.ui.view.LocationSearchBar
+        android:id="@+id/locationSearchBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:statusLocationSearchBar="optional"
+        android:paddingStart="@dimen/spacing_normal"
+        android:paddingEnd="@dimen/spacing_normal"
+        app:layout_constraintBottom_toTopOf="@id/resultsList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchBar"
+        app:hintLocation="Current Location"
+        app:tintLocation="@color/colorAccent" />
 
     <com.clinia.widgets.ui.view.ResultsList
         android:id="@+id/resultsList"
@@ -30,7 +45,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchBar"
+        app:layout_constraintTop_toBottomOf="@id/locationSearchBar"
         app:titleTextColor="@color/colorPrimary"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
