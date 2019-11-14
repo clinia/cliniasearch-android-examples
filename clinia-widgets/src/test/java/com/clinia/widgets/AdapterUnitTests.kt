@@ -13,7 +13,7 @@ import org.junit.Assert.*
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-class ExampleUnitTest {
+class AdapterUnitTests {
     @Test
     fun singleIndexAdapter_toJson_urlEncode() {
         val adapter = SingleIndexAdapter()
