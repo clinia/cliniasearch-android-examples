@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat
 @JsonClass(generateAdapter = true)
 data class Records(
     val id: String,
+    val documentType: DocumentType,
     val type: String?,
     val name: String?,
     val note: String?,
@@ -17,7 +18,8 @@ data class Records(
     val phones: List<Phone>,
     val onlineBookingUrl: String?,
     val distance: Float?,
-    val openingHours: OpeningHours?
+    val openingHours: OpeningHours?,
+    val owner: String?
 ) {
     private fun getHours(): List<DailyHours>? =
         if (getTodayHours() == null) getDailyHours(Calendar.getInstance().get(Calendar.DAY_OF_WEEK))
@@ -144,4 +146,9 @@ data class DailyHours(
 
         return time.after(calendarStart.time) && time.before(calendarEnd.time)
     }
+}
+
+enum class DocumentType {
+    @Json(name ="health_facility") HEALTH_FACILITY,
+    @Json(name ="professional") PROFESSIONAL
 }

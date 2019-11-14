@@ -1,21 +1,20 @@
 package com.clinia.widgets.data
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.clinia.widgets.data.network.NetworkManager
-import com.clinia.widgets.data.network.QuerySuggestRequestBody
-import com.clinia.widgets.data.network.SearchRequestBody
+import com.clinia.widgets.data.network.QuerySuggestionRequestBody
+import com.clinia.widgets.data.network.SingleIndexSearchRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class SearchDataRepository {
 
-    fun getSearchData(requestBody: SearchRequestBody): MutableLiveData<SearchResponse> {
+    fun getSearchData(requestBody: SingleIndexSearchRequestBody): MutableLiveData<SearchResponse> {
         val data = MutableLiveData<SearchResponse>()
         //get clinics network call
-        NetworkManager.searchService.listClinics(requestBody).enqueue(object : Callback<SearchResponse> {
+        NetworkManager.searchService.searchHealthFacilities(requestBody).enqueue(object : Callback<SearchResponse> {
             override fun onFailure(call: Call<SearchResponse>?, t: Throwable?) {
                 t?.let { Log.e(this.javaClass.simpleName, "onFailure message: ${t.message}") }
             }
@@ -32,15 +31,15 @@ class SearchDataRepository {
         return data
     }
 
-    fun getQuerySuggestions(requestBody: QuerySuggestRequestBody): MutableLiveData<QuerySuggestResponse> {
-        val data = MutableLiveData<QuerySuggestResponse>()
+    fun getQuerySuggestions(requestBody: QuerySuggestionRequestBody): MutableLiveData<Array<QuerySuggestion>> {
+        val data = MutableLiveData<Array<QuerySuggestion>>()
         //get clinics network call
-        NetworkManager.querySuggestService.querySuggest(requestBody).enqueue(object : Callback<QuerySuggestResponse> {
-            override fun onFailure(call: Call<QuerySuggestResponse>?, t: Throwable?) {
+        NetworkManager.querySuggestService.querySuggest(requestBody).enqueue(object : Callback<Array<QuerySuggestion>> {
+            override fun onFailure(call: Call<Array<QuerySuggestion>>?, t: Throwable?) {
                 t?.let { Log.e(this.javaClass.simpleName, "onFailure message: ${t.message}") }
             }
 
-            override fun onResponse(call: Call<QuerySuggestResponse>?, response: Response<QuerySuggestResponse>?) {
+            override fun onResponse(call: Call<Array<QuerySuggestion>>?, response: Response<Array<QuerySuggestion>>?) {
                 response?.let {
                     if (it.isSuccessful)
                         data.postValue(it.body())

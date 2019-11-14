@@ -3,26 +3,26 @@ package com.clinia.widgets.data
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
+data class MultiSearchResponse(
+    val results: Array<SearchResponse>
+)
+
+@JsonClass(generateAdapter = true)
 data class SearchResponse(
+    val indexName: String?,
     val records: MutableList<Records>,
-    val info: SearchInfo
+    val meta: Metadata
 )
 
 @JsonClass(generateAdapter = true)
-data class SearchInfo(
-    val query: String,
-    val currentPage: Int,
-    val numPages: Int,
-    val perPage: Int,
-    val total: Int,
-    val geo: GeoInfo?
-)
-
-@JsonClass(generateAdapter = true)
-data class GeoInfo (
-    val canonicalName: String,
-    val type: String,
-    val location: GeoPointSearch
+data class Metadata(
+    val query: String?,
+    val page: Int?,
+    val numPages: Int?,
+    val perPage: Int?,
+    val total: Int?,
+    val aroundLatLng: String?,
+    val insideBoundingBox: String?
 )
 
 @JsonClass(generateAdapter = true)
