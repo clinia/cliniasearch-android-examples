@@ -23,7 +23,7 @@ interface QuerySuggestService {
 
 data class QuerySuggestRequestBody(
     val query: String? = "",
-    val highlightPreTag: Int? = null,
-    val highlightPostTag: Int? = null,
+    val highlightPreTag: String? = null,
+    val highlightPostTag: String? = null,
     var size: Int = 5
 )

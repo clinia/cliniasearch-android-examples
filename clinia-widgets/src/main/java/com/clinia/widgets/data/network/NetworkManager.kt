@@ -16,5 +16,6 @@ object NetworkManager{
         .build()
 
     var searchService: SearchService = retrofit.create(SearchService::class.java)
+    var querySuggestService: QuerySuggestService = retrofit.create(QuerySuggestService::class.java)
 
 }

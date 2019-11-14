@@ -3,9 +3,11 @@ package com.clinia.widgets.ui.main
 import android.app.Application
 import android.location.Location
 import androidx.lifecycle.*
+import com.clinia.widgets.data.QuerySuggestResponse
 import com.clinia.widgets.data.SearchResponse
 import com.clinia.widgets.data.SearchDataRepository
 import com.clinia.widgets.data.network.Filters
+import com.clinia.widgets.data.network.QuerySuggestRequestBody
 import com.clinia.widgets.data.network.SearchRequestBody
 import com.google.android.gms.location.LocationServices
 
@@ -17,6 +19,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     var locationQuery: String = ""
     private var lastLocation: Location? = null
     private var searchData = MutableLiveData<SearchResponse>()
+    private var querySuggestions = MutableLiveData<QuerySuggestResponse>()
 
     init {
         LocationServices.getFusedLocationProviderClient(application)
@@ -33,6 +36,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     //call this method to access the data
     fun getSearchData(): LiveData<SearchResponse> = searchData
+
+    fun querySuggest(
+        query: String,
+        preTag: String? = null,
+        postTag: String? = null
+    ): LiveData<QuerySuggestResponse> {
+        querySuggest(QuerySuggestRequestBody(query, preTag, postTag))
+        return querySuggestions
+    }
 
     private fun search(query: String?, location: Location?) {
         val search = SearchRequestBody(query)
@@ -59,5 +71,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun loadData(search: SearchRequestBody) {
         searchData = dataRepository.getSearchData(search)
+    }
+
+    private fun querySuggest(query: QuerySuggestRequestBody) {
+        querySuggestions = dataRepository.getQuerySuggestions(query)
     }
 }
