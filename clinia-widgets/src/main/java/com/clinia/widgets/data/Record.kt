@@ -6,21 +6,39 @@ import java.text.ParseException
 import java.util.*
 import java.text.SimpleDateFormat
 
+interface Record {
+    val id: String
+    val documentType: DocumentType
+    val owner: String?
+}
+
 @JsonClass(generateAdapter = true)
-data class Records(
-    val id: String,
-    val documentType: DocumentType,
+data class Professional (
+    override val id: String,
+    override val documentType: DocumentType,
+    override val owner: String?,
+    val title: String?,
+    val practiceNumber: String?,
+    val professions: List<String>?,
+    val name: String?,
+    val phones: List<Phone>?
+) : Record
+
+@JsonClass(generateAdapter = true)
+data class HealthFacility(
+    override val id: String,
+    override val documentType: DocumentType,
+    override val owner: String?,
     val type: String?,
     val name: String?,
     val note: String?,
     val address: Address?,
     val geoPoint: GeoPoint?,
-    val phones: List<Phone>,
+    val phones: List<Phone>?,
     val onlineBookingUrl: String?,
     val distance: Float?,
-    val openingHours: OpeningHours?,
-    val owner: String?
-) {
+    val openingHours: OpeningHours?
+) : Record {
     private fun getHours(): List<DailyHours>? =
         if (getTodayHours() == null) getDailyHours(Calendar.getInstance().get(Calendar.DAY_OF_WEEK))
         else getTodayHours()

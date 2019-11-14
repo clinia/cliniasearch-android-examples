@@ -2,61 +2,50 @@ package com.clinia.widgets.data.network
 
 import com.clinia.widgets.data.MultiSearchResponse
 import com.clinia.widgets.data.SearchResponse
-import com.squareup.moshi.Moshi
 import retrofit2.Call
 import retrofit2.http.*
 import com.squareup.moshi.ToJson
+import java.net.URLEncoder
 
 interface SearchService {
     @POST("search/v1/indexes/health_facility/query?")
     fun searchHealthFacilities(
-        @Body body: SingleIndexSearchRequestBody,
-        @Header("Content-Type") auth: String = contentType,
-        @Field("x-clinia-application-id") api: String = application,
-        @Field("x-clinia-api-key") key: String = apiKey
+            @Body body: SingleIndexSearchRequest,
+            @Header("Content-Type") auth: String = contentType,
+            @Query("x-clinia-application-id") api: String = application,
+            @Query("x-clinia-api-key") key: String = apiKey
     ): Call<SearchResponse>
 
     @POST("search/v1/indexes/professional/query?")
     fun searchProfessionnals(
-        @Body body: SingleIndexSearchRequestBody,
-        @Header("Content-Type") auth: String = contentType,
-        @Field("x-clinia-application-id") api: String = application,
-        @Field("x-clinia-api-key") key: String = apiKey
+            @Body body: SingleIndexSearchRequest,
+            @Header("Content-Type") auth: String = contentType,
+            @Query("x-clinia-application-id") api: String = application,
+            @Query("x-clinia-api-key") key: String = apiKey
     ): Call<SearchResponse>
 
     @POST("search/v1/indexes/*/queries?")
     fun search(
-        @Body body: MultiIndexesSearchRequestBody,
-        @Header("Content-Type") auth: String = contentType,
-        @Field("x-clinia-application-id") api: String = application,
-        @Field("x-clinia-api-key") key: String = apiKey
+            @Body body: MultiIndexesSearchRequest,
+            @Header("Content-Type") auth: String = contentType,
+            @Query("x-clinia-application-id") api: String = application,
+            @Query("x-clinia-api-key") key: String = apiKey
     ): Call<MultiSearchResponse>
 }
 
-data class MultiIndexesSearchRequestBody(
-    val requests: Array<SingleIndexSearchRequestBody>? = null
+data class MultiIndexesSearchRequest(
+    val requests: List<SingleIndexSearchRequest>? = null
 )
 
-data class SingleIndexSearchRequestBody(
+data class SingleIndexSearchRequest(
     val indexName: String? = null,
-
-//    val params: String? = null
     val query: String? = "",
     val page: Int = 0,
     val perPage: Int = 20,
     val queryType: String? = "",
-    val searchFields: Array<String>? = null,
+    val searchFields: List<String>? = null,
     val location: String? = null
-) {
-    private var moshi = Moshi.Builder()
-        .add(SingleIndexAdapter())
-        .build()
-
-    fun toJson(singleIndexSearchRequestBody: SingleIndexSearchRequestBody): String =
-        moshi.adapter<SingleIndexSearchRequestBody>(SingleIndexSearchRequestBody::class.java).toJson(
-            singleIndexSearchRequestBody
-        )
-}
+)
 
 data class SingleIndexSearchRequestBodyJson(
     val indexName: String? = "",
@@ -65,10 +54,16 @@ data class SingleIndexSearchRequestBodyJson(
 
 class SingleIndexAdapter {
     @ToJson
-    fun toJson(s: SingleIndexSearchRequestBody): SingleIndexSearchRequestBodyJson {
+    fun toJson(s: SingleIndexSearchRequest): SingleIndexSearchRequestBodyJson {
+        var params = "query=${URLEncoder.encode(s.query, "UTF-8")}&page=${s.page}&perPage=${s.perPage}"
+
+        if (s.queryType != null) params += "&queryType=${URLEncoder.encode(s.queryType, "UTF-8")}"
+        if (s.searchFields != null) params += "&searchFields=${URLEncoder.encode(s.searchFields.toString(), "UTF-8")}"
+        if (s.location != null) params += "&location=${URLEncoder.encode(s.location, "UTF-8")}"
+
         return SingleIndexSearchRequestBodyJson(
             s.indexName,
-            "query=${s.query}&page=${s.page}>&perPage=${s.perPage}&queryType=${s.queryType}&searchFields=${s.searchFields}&location=${s.location}"
+            params
         )
     }
 }

@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.clinia.widgets.R
+import com.clinia.widgets.data.HealthFacility
 import com.clinia.widgets.ui.main.MainViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -50,9 +51,9 @@ class ResultsMapFragment : Fragment(), OnMapReadyCallback {
         resultsMap.getMapAsync(this)
 
         viewModel.getSearchData().observe(this, Observer {
-            adapter?.setData(it.records)
+            adapter?.setData(it.records as MutableList<HealthFacility>)
             // Creating a marker
-            for (record in it.records) {
+            for (record in it.records as MutableList<HealthFacility>) {
                 record.geoPoint?.let {
                     val markerOptions = MarkerOptions()
                         .position(

@@ -2,10 +2,10 @@ package com.clinia.widgets
 
 import androidx.test.filters.SmallTest
 import com.clinia.widgets.data.*
-import com.clinia.widgets.data.network.MultiIndexesSearchRequestBody
+import com.clinia.widgets.data.network.MultiIndexesSearchRequest
 import com.clinia.widgets.data.network.NetworkManager
-import com.clinia.widgets.data.network.QuerySuggestionRequestBody
-import com.clinia.widgets.data.network.SingleIndexSearchRequestBody
+import com.clinia.widgets.data.network.QuerySuggestionRequest
+import com.clinia.widgets.data.network.SingleIndexSearchRequest
 
 import org.junit.Test
 import org.junit.Assert.*
@@ -13,6 +13,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.concurrent.CountDownLatch
+import kotlin.reflect.typeOf
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -20,11 +21,11 @@ import java.util.concurrent.CountDownLatch
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @SmallTest
-class ExampleInstrumentedTest {
+class NetworkInstrumentedTests {
     @Test
     fun searchSingleIndexHealthFacility() {
         val signal = CountDownLatch(1)
-        NetworkManager.searchService.searchHealthFacilities(SingleIndexSearchRequestBody(params = "query=&queryType=prefixLast")).enqueue(object : Callback<SearchResponse> {
+        NetworkManager.searchService.searchHealthFacilities(SingleIndexSearchRequest("health_facility", "")).enqueue(object : Callback<SearchResponse> {
             override fun onFailure(call: Call<SearchResponse>?, t: Throwable?) {
                 t?.let { fail("onFailure message: ${t.message}") }
                 signal.countDown()
@@ -38,7 +39,7 @@ class ExampleInstrumentedTest {
                     assertNotNull(body)
 
                     assertFalse(body?.records.isNullOrEmpty())
-                    body?.records?.all { record -> record.documentType == DocumentType.HEALTH_FACILITY }?.let { all -> assertTrue(all) }
+                    body?.records?.all { record -> record.documentType == DocumentType.HEALTH_FACILITY && record is HealthFacility }?.let { all -> assertTrue(all) }
 
                     assertNotNull(body?.meta)
                     assertEquals("", body?.meta?.query)
@@ -52,7 +53,7 @@ class ExampleInstrumentedTest {
     @Test
     fun searchSingleIndexProfessional() {
         val signal = CountDownLatch(1)
-        NetworkManager.searchService.searchProfessionnals(SingleIndexSearchRequestBody(params = "query=&queryType=prefixLast")).enqueue(object : Callback<SearchResponse> {
+        NetworkManager.searchService.searchProfessionnals(SingleIndexSearchRequest("professional", "")).enqueue(object : Callback<SearchResponse> {
             override fun onFailure(call: Call<SearchResponse>?, t: Throwable?) {
                 t?.let { fail("onFailure message: ${t.message}") }
                 signal.countDown()
@@ -66,7 +67,7 @@ class ExampleInstrumentedTest {
                     assertNotNull(body)
 
                     assertFalse(body?.records.isNullOrEmpty())
-                    body?.records?.all { record -> record.documentType == DocumentType.PROFESSIONAL }?.let { all -> assertTrue(all) }
+                    body?.records?.all { record -> record.documentType == DocumentType.PROFESSIONAL && record is Professional }?.let { all -> assertTrue(all) }
 
                     assertNotNull(body?.meta)
                     assertEquals("", body?.meta?.query)
@@ -80,7 +81,7 @@ class ExampleInstrumentedTest {
     @Test
     fun searchAllIndexes() {
         val signal = CountDownLatch(1)
-        NetworkManager.searchService.search(MultiIndexesSearchRequestBody(arrayOf(SingleIndexSearchRequestBody("health_facility","query=&queryType=prefixLast"), SingleIndexSearchRequestBody("professional", "query=&queryType=prefixLast")))).enqueue(object : Callback<MultiSearchResponse> {
+        NetworkManager.searchService.search(MultiIndexesSearchRequest(listOf(SingleIndexSearchRequest("health_facility",""), SingleIndexSearchRequest("professional", "")))).enqueue(object : Callback<MultiSearchResponse> {
             override fun onFailure(call: Call<MultiSearchResponse>?, t: Throwable?) {
                 t?.let { fail("onFailure message: ${t.message}") }
                 signal.countDown()
@@ -105,7 +106,7 @@ class ExampleInstrumentedTest {
     @Test
     fun querySuggestions() {
         val signal = CountDownLatch(1)
-        NetworkManager.querySuggestionService.suggest(QuerySuggestionRequestBody("query=")).enqueue(object : Callback<Array<QuerySuggestion>> {
+        NetworkManager.querySuggestionService.suggest(QuerySuggestionRequest("", "<strong>", "</strong>", 5)).enqueue(object : Callback<Array<QuerySuggestion>> {
             override fun onFailure(call: Call<Array<QuerySuggestion>>?, t: Throwable?) {
                 t?.let { fail("onFailure message: ${t.message}") }
                 signal.countDown()

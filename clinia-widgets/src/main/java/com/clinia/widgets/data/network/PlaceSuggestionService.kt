@@ -7,14 +7,20 @@ import retrofit2.http.*
 interface PlaceSuggestionService {
     @GET("location/v1/autocomplete?")
     fun suggest(
-            @Field("input") input: String?,
-            @Field("country") country: String?,
-            @Field("limit") limit: Int?,
-            @Field("types") place: String = "place",
-            @Field("types") postCode: String = "postcode",
-            @Field("types") neighborHood: String = "neighborhood",
-            @Field("x-clinia-application-id") api: String = application,
-            @Field("x-clinia-api-key") key: String = apiKey,
+            @Query("input") input: String?,
+            @Query("country") country: String?,
+            @Query("limit") limit: Int?,
+            @Query("types") place: String = "place",
+            @Query("types") postCode: String = "postcode",
+            @Query("types") neighborHood: String = "neighborhood",
+            @Query("x-clinia-application-id") api: String = application,
+            @Query("x-clinia-api-key") key: String = apiKey,
             @Header("Content-Type") auth: String = contentType
     ): Call<Array<PlaceSuggestion>>
 }
+
+data class PlaceSuggestionRequest(
+    val input: String = "",
+    val country: String? = null,
+    val size: Int = 5
+)
