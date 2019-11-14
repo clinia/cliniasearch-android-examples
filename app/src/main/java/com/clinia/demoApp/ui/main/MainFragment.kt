@@ -11,13 +11,14 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.clinia.widgets.R
 import com.clinia.widgets.ui.main.MainViewModel
+import com.clinia.widgets.ui.view.LocationSearchBar
 import com.clinia.widgets.ui.view.ResultAdapter
 import com.clinia.widgets.ui.view.SearchBar
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.main_fragment.*
 
-class MainFragment : Fragment(), SearchBar.SearchBarListener {
+class MainFragment : Fragment(), SearchBar.SearchBarListener, LocationSearchBar.LocationSearchBarListener {
 
     private lateinit var viewModel: MainViewModel
 
@@ -30,42 +31,44 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener {
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        searchBar.searchListener = this
+        searchBar.listener = this
+        locationSearchBar.listener = this
         context?.let {
             adapter = ResultAdapter(it, mutableListOf())
             resultsList.adapter = adapter
             resultsList.layoutManager = LinearLayoutManager(activity)
         }
+        activity?.let {
+            viewModel = ViewModelProviders.of(it).get(MainViewModel::class.java)
+        }
     }
 
-    override fun onEnter(query: String, location: String) {
-        viewModel.getSearchData(query, location).observe(this, Observer {
-                adapter?.setData(it.records)
+    override fun onSearchBarEnter(query: String) {
+        viewModel.query = query
+        viewModel.getSearchData().observe(this, Observer {
+            adapter?.setData(it.records)
         })
     }
 
-    override fun onAutoCompleteSelect() {
+    override fun onSearchBarTextChange() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onTextChange() {
+
+    override fun onLocationSearchBarEnter(location: String) {
+        viewModel.locationQuery = location
+        viewModel.getSearchData().observe(this, Observer {
+            adapter?.setData(it.records)
+        })
+    }
+
+    override fun onLocationSearchBarTextChange() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onResult() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
-    override fun onError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
     companion object {
         fun newInstance() = MainFragment()

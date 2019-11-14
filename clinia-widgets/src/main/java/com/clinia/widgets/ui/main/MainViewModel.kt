@@ -3,58 +3,77 @@ package com.clinia.widgets.ui.main
 import android.app.Application
 import android.location.Location
 import androidx.lifecycle.*
+import com.clinia.widgets.data.Metadata
+import com.clinia.widgets.data.PlaceSuggestion
+import com.clinia.widgets.data.QuerySuggestion
 import com.clinia.widgets.data.SearchResponse
 import com.clinia.widgets.data.SearchDataRepository
-import com.clinia.widgets.data.network.Filters
-import com.clinia.widgets.data.network.SearchRequestBody
+import com.clinia.widgets.data.network.QuerySuggestionRequest
+import com.clinia.widgets.data.network.SingleIndexSearchRequest
+
 import com.google.android.gms.location.LocationServices
 
-class MainViewModel(application: Application): AndroidViewModel(application) {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val dataRepository: SearchDataRepository = SearchDataRepository()
 
-    private var lastLocation: Location? = null
+    var query: String = ""
+    var locationQuery: String = ""
+
     private var searchData = MutableLiveData<SearchResponse>()
+    private var searchMetadata = MutableLiveData<Metadata>()
+    private var querySuggestions = MutableLiveData<Array<QuerySuggestion>>()
+    private var placeSuggestions = MutableLiveData<Array<PlaceSuggestion>>()
 
     init {
-        LocationServices.getFusedLocationProviderClient(application)
-            .lastLocation.addOnSuccessListener {
-            lastLocation = it
-        }
+        search()
     }
 
-    //call this method to get the data
-    fun getSearchData(query: String, location: String): LiveData<SearchResponse>{
-        return if (location.isBlank() or location.isEmpty()) {
-            //TODO: change to coordinates when backend supports it
-//            search(query, lastLocation)
-            search(query, location)
-        } else {
-            search(query, location)
-        }
+    //call this method to trigger a search with the saved parameters
+    fun search() {
+        search(query, locationQuery)
     }
 
-    private fun search(query: String?, location: Location?): LiveData<SearchResponse> {
-        val search = SearchRequestBody(query)
-        location?.let {
-            search.filters = Filters("${it.latitude}, ${it.longitude}")
-        }
+    //call this method to access the data
+    fun getSearchData(): LiveData<SearchResponse> = searchData
+
+    fun querySuggest(
+        query: String,
+        preTag: String? = null,
+        postTag: String? = null
+    ): LiveData<Array<QuerySuggestion>> {
+        querySuggest(QuerySuggestionRequest(query, preTag, postTag))
+        return querySuggestions
+    }
+
+    private fun search(query: String?, location: Location?) {
+        val search = SingleIndexSearchRequest(query)
+//        location?.let {
+//            search.filters = Filters("${it.latitude}, ${it.longitude}")
+//        }
         loadData(search)
-        return searchData
     }
 
-    //call this method to get the data
-    private fun search(query: String?, location: String?): LiveData<SearchResponse> {
-        val search = SearchRequestBody(query)
-        location?.let {
-            search.filters = Filters(location)
-        }
+    private fun search(query: String?, location: String?) {
+        val search = SingleIndexSearchRequest(query)
+//        location?.let {
+//            if (it.isBlank() or it.isEmpty()) {
+//                locationQuery = it
+//                //TODO: change to coordinates when backend supports it
+////            search(query, lastLocation)
+//                search.filters = Filters(it)
+//            } else {
+//                search.filters = Filters(it)
+//            }
+//        }
         loadData(search)
-        return searchData
     }
 
-    private fun loadData(search: SearchRequestBody) {
-        searchData = dataRepository.getSearchData(search)
+    private fun loadData(search: SingleIndexSearchRequest) {
+        searchData = dataRepository.searchHealthFacilities(search)
     }
 
+    private fun querySuggest(query: QuerySuggestionRequest) {
+        querySuggestions = dataRepository.getQuerySuggestions(query)
+    }
 }

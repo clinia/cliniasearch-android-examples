@@ -10,19 +10,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.clinia.widgets.R
-import com.clinia.widgets.data.Records
+import com.clinia.widgets.data.HealthFacility
 import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.result_card_view.view.*
 
-class ResultAdapter(private val context: Context, private var data: MutableList<Records>) :
+class ResultAdapter(private val context: Context, private var data: MutableList<HealthFacility>) :
     RecyclerView.Adapter<ResultAdapter.ViewHolder>() {
 
     class ViewHolder(val resultCard: MaterialCardView) : RecyclerView.ViewHolder(resultCard)
 
-    fun setData(mutableList: MutableList<Records>) {
+    fun setData(mutableList: MutableList<HealthFacility>) {
         data = mutableList
         notifyDataSetChanged()
     }
+
+    fun getIndex(records: HealthFacility) = data.indexOf(records)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -78,7 +80,7 @@ class ResultAdapter(private val context: Context, private var data: MutableList<
         holder.resultCard.callBtn.visibility =
             if (data[position].phones.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
         holder.resultCard.callBtn.setOnClickListener {
-            val phoneNumber = data[position].phones.first().number
+            val phoneNumber = data[position].phones?.first()?.number
             val intent = Intent(Intent.ACTION_DIAL).apply {
                 data = Uri.parse("tel:$phoneNumber")
             }
