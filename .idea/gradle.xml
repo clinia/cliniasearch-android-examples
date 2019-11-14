@@ -9,6 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/clinia-client" />
             <option value="$PROJECT_DIR$/clinia-widgets" />
           </set>
         </option>

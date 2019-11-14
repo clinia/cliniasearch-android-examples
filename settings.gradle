@@ -1,2 +1,2 @@
-include ':app', ':clinia-widgets'
+include ':app', ':clinia-widgets', ':clinia-client'
 rootProject.name='Widgets'

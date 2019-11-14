@@ -1,34 +1,69 @@
 package com.clinia.widgets.data.network
 
+import com.clinia.widgets.data.MultiSearchResponse
 import com.clinia.widgets.data.SearchResponse
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.Header
-import retrofit2.http.POST
-
-const val token =
-    "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImFmZDkzZjhlODRiNGUyOWQwMDIyMmQxOGVjNzQ2Njc0IiwidHlwIjoiSldUIn0.eyJuYmYiOjE1NzE0MjQzNzIsImV4cCI6MTU3NDAxNjM3MiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5jbGluaWEuZGV2IiwiYXVkIjpbImh0dHBzOi8vYWNjb3VudHMuY2xpbmlhLmRldi9yZXNvdXJjZXMiLCJjYXRhbG9nIl0sImNsaWVudF9pZCI6ImRldiIsInN1YiI6ImEzNWNkMzU0LWJmMDgtNGZjMS1hN2RjLWIxMGE5YTAwY2MxNSIsImF1dGhfdGltZSI6MTU3MTQyNDM3MiwiaWRwIjoibG9jYWwiLCJ0eXBlIjoicGFydG5lciIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJsb2NhbGUiOiJmciIsImVtYWlsIjoiYWRtaW5Ad3Vuc2NoLWluYy5jb20iLCJnaXZlbl9uYW1lIjoiQWRtaW4iLCJmYW1pbHlfbmFtZSI6Ild1bnNjaCBJbmMiLCJuYW1lIjoiQWRtaW4gV3Vuc2NoIEluYyIsInJvbGUiOiJhZG1pbiIsInBhcnRuZXIiOiJXVU5TQ0gtSU5DIiwic2NvcGUiOlsib3BlbmlkIiwiY2F0YWxvZyIsIm9mZmxpbmVfYWNjZXNzIl0sImFtciI6WyJwd2QiXSwibW9kdWxlcyI6W119.SxMRLqkHhvk2e9PINCGuHDvG6v4T0h5XSvR5dqN9crYiYhHSLHvse6I8JFW9xqEpLYJepJv7F0umiAu72PbFuKKWDrsrUvQIlOCER1VGxQ4SIDU2LAgz2wbGI75Y3Mko3ejxVRPNV-mydjDbbSv8HzpEvkjHAD4eVnOuEwSPGVu6RjOeSq6wpTZufZtOLPqlkkXZr01IjyxRPmC_8qcIb36W7baZGWIv19xss3esBhjIQI0r86GciR1mY8pski-wuvuAQCsbK5Kb_Xgf7fl4DSlX1PZMPqAV-n-IpqzgHB8H1Ykpa6m7WFBnlSJrhDLWOovgDs1wOjHjBot-ZeKAaw"
-const val contentType = "application/json"
+import retrofit2.http.*
+import com.squareup.moshi.ToJson
+import java.net.URLEncoder
 
 interface SearchService {
-
-    @POST("search/v1/search?")
-    fun listClinics(
-        @Body searchRequestBody: SearchRequestBody,
-        @Header("Content-Type") auth: String = contentType,
-        @Header("Authorization") content: String = token
+    @POST("search/v1/indexes/health_facility/query?")
+    fun searchHealthFacilities(
+            @Body body: SingleIndexSearchRequest,
+            @Header("Content-Type") auth: String = contentType,
+            @Query("x-clinia-application-id") api: String = application,
+            @Query("x-clinia-api-key") key: String = apiKey
     ): Call<SearchResponse>
+
+    @POST("search/v1/indexes/professional/query?")
+    fun searchProfessionnals(
+            @Body body: SingleIndexSearchRequest,
+            @Header("Content-Type") auth: String = contentType,
+            @Query("x-clinia-application-id") api: String = application,
+            @Query("x-clinia-api-key") key: String = apiKey
+    ): Call<SearchResponse>
+
+    @POST("search/v1/indexes/*/queries?")
+    fun search(
+            @Body body: MultiIndexesSearchRequest,
+            @Header("Content-Type") auth: String = contentType,
+            @Query("x-clinia-application-id") api: String = application,
+            @Query("x-clinia-api-key") key: String = apiKey
+    ): Call<MultiSearchResponse>
 }
 
-data class SearchRequestBody(
-    val q: String? = "",
-    val page: Int? = null,
-    val perPage: Int? = null,
-    var filters: Filters? = null
+data class MultiIndexesSearchRequest(
+    val requests: List<SingleIndexSearchRequest>? = null
 )
 
-@Suppress("ArrayInDataClass")
-data class Filters(
-    val location: String?,
-    val types: Array<String>? = null
+data class SingleIndexSearchRequest(
+    val indexName: String? = null,
+    val query: String? = "",
+    val page: Int = 0,
+    val perPage: Int = 20,
+    val queryType: String? = "",
+    val searchFields: List<String>? = null,
+    val location: String? = null
 )
+
+data class SingleIndexSearchRequestBodyJson(
+    val indexName: String? = "",
+    val params: String
+)
+
+class SingleIndexAdapter {
+    @ToJson
+    fun toJson(s: SingleIndexSearchRequest): SingleIndexSearchRequestBodyJson {
+        var params = "query=${URLEncoder.encode(s.query, "UTF-8")}&page=${s.page}&perPage=${s.perPage}"
+
+        if (s.queryType != null) params += "&queryType=${URLEncoder.encode(s.queryType, "UTF-8")}"
+        if (s.searchFields != null) params += "&searchFields=${URLEncoder.encode(s.searchFields.toString(), "UTF-8")}"
+        if (s.location != null) params += "&location=${URLEncoder.encode(s.location, "UTF-8")}"
+
+        return SingleIndexSearchRequestBodyJson(
+            s.indexName,
+            params
+        )
+    }
+}
