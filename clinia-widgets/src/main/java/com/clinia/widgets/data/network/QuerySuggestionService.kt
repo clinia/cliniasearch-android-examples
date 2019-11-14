@@ -1,6 +1,7 @@
 package com.clinia.widgets.data.network
 
 import com.clinia.widgets.data.QuerySuggestion
+import com.squareup.moshi.Moshi
 import com.squareup.moshi.ToJson
 import retrofit2.Call
 import retrofit2.http.*
@@ -16,12 +17,20 @@ interface QuerySuggestionService {
 }
 
 data class QuerySuggestionRequestBody(
-//        val params: String? = null
     val query: String = "",
     val highlightPreTag: String? = null,
     val highlightPostTag: String? = null,
     val size: Int? = 5
-)
+){
+    private var moshi = Moshi.Builder()
+        .add(QuerySuggestionAdapter())
+        .build()
+
+    fun toJson(querySuggestionRequestBody: QuerySuggestionRequestBody): String =
+        moshi.adapter<QuerySuggestionRequestBody>(QuerySuggestionRequestBody::class.java).toJson(
+            querySuggestionRequestBody
+        )
+}
 
 data class  QuerySuggestionRequestBodyJson(
     val params: String

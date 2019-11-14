@@ -2,6 +2,7 @@ package com.clinia.widgets.data.network
 
 import com.clinia.widgets.data.MultiSearchResponse
 import com.clinia.widgets.data.SearchResponse
+import com.squareup.moshi.Moshi
 import retrofit2.Call
 import retrofit2.http.*
 import com.squareup.moshi.ToJson
@@ -46,7 +47,16 @@ data class SingleIndexSearchRequestBody(
     val queryType: String? = "",
     val searchFields: Array<String>? = null,
     val location: String? = null
-)
+) {
+    private var moshi = Moshi.Builder()
+        .add(SingleIndexAdapter())
+        .build()
+
+    fun toJson(singleIndexSearchRequestBody: SingleIndexSearchRequestBody): String =
+        moshi.adapter<SingleIndexSearchRequestBody>(SingleIndexSearchRequestBody::class.java).toJson(
+            singleIndexSearchRequestBody
+        )
+}
 
 data class SingleIndexSearchRequestBodyJson(
     val indexName: String? = "",
