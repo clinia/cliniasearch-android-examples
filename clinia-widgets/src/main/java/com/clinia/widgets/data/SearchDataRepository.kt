@@ -34,7 +34,7 @@ class SearchDataRepository {
     fun getQuerySuggestions(requestBody: QuerySuggestionRequestBody): MutableLiveData<Array<QuerySuggestion>> {
         val data = MutableLiveData<Array<QuerySuggestion>>()
         //get clinics network call
-        NetworkManager.querySuggestService.querySuggest(requestBody).enqueue(object : Callback<Array<QuerySuggestion>> {
+        NetworkManager.querySuggestionService.suggest(requestBody).enqueue(object : Callback<Array<QuerySuggestion>> {
             override fun onFailure(call: Call<Array<QuerySuggestion>>?, t: Throwable?) {
                 t?.let { Log.e(this.javaClass.simpleName, "onFailure message: ${t.message}") }
             }
