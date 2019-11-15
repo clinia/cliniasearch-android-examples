@@ -8,6 +8,7 @@ import com.clinia.widgets.data.PlaceSuggestion
 import com.clinia.widgets.data.QuerySuggestion
 import com.clinia.widgets.data.SearchResponse
 import com.clinia.widgets.data.SearchDataRepository
+import com.clinia.widgets.data.network.PlaceSuggestionRequest
 import com.clinia.widgets.data.network.QuerySuggestionRequest
 import com.clinia.widgets.data.network.SingleIndexSearchRequest
 
@@ -49,6 +50,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         return querySuggestions
     }
 
+    fun placeSuggest(
+        location: String,
+        country: String?
+    ): LiveData<List<PlaceSuggestion>> {
+        placeSuggest(PlaceSuggestionRequest(location, country))
+        return placeSuggestions
+    }
+
     private fun search(query: String?, location: Location?) {
         val search = SingleIndexSearchRequest(query)
 //        location?.let {
@@ -79,4 +88,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private fun querySuggest(query: QuerySuggestionRequest) {
         querySuggestions = dataRepository.getQuerySuggestions(query)
     }
+
+    private fun placeSuggest(query: PlaceSuggestionRequest) {
+        placeSuggestions = dataRepository.getPlaceSuggestions(query)
+    }
+
 }

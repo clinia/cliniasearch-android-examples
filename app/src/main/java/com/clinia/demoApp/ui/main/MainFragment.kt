@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.clinia.widgets.R
 import com.clinia.widgets.data.HealthFacility
+import com.clinia.widgets.data.PlaceSuggestion
 import com.clinia.widgets.data.QuerySuggestion
 import com.clinia.widgets.ui.main.MainViewModel
 import com.clinia.widgets.ui.view.AutoComplete
@@ -62,12 +63,16 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener,
     }
 
     override fun onSearchBarTextChange(query: String) {
-        autoComplete.visibility = View.VISIBLE 
+        autoComplete.visibility = View.VISIBLE
         viewModel.querySuggest(query).observe(this, Observer {
             autoComplete.setAutoCompleteItems(it)
         })
         //TODO: Add search as you type
 //        if (searchBar.)
+    }
+
+    override fun onLocationSearchBarFocusChanged(hasFocus: Boolean) {
+        autoComplete.visibility = if (hasFocus) View.VISIBLE else View.INVISIBLE
     }
 
     override fun onLocationSearchBarEnter(location: String) {
@@ -77,18 +82,30 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener,
         })
     }
 
-    override fun onLocationSearchBarTextChange() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onLocationSearchBarTextChange(location: String) {
+        autoComplete.visibility = View.VISIBLE
+        viewModel.placeSuggest(location, null).observe(this, Observer {
+            autoComplete.setAutoCompleteItems(it)
+        })
+        //TODO: Add search as you type
+//        if (searchBar.)
     }
 
-    override fun onAutoCompleteItemClicked(querySuggestion: QuerySuggestion) {
-        querySuggestion.suggestion?.let {suggestion ->
-            viewModel.query = suggestion
-            searchBar.setQuery(suggestion)
-            viewModel.getSearchData().observe(this, Observer {
-                adapter?.setData(it.records as MutableList<HealthFacility>)
-            })
+    override fun onAutoCompleteItemClicked(suggestion: Any) {
+        if (suggestion is QuerySuggestion) {
+            suggestion.suggestion?.let {it ->
+                viewModel.query = it
+                searchBar.setQuery(it)
+            }
+        } else if (suggestion is PlaceSuggestion) {
+            suggestion.formattedAddress?.let {
+                viewModel.locationQuery = it
+                locationSearchBar.setLocation(it)
+            }
         }
+        viewModel.getSearchData().observe(this, Observer {
+            adapter?.setData(it.records as MutableList<HealthFacility>)
+        })
     }
 
     companion object {

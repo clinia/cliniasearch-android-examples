@@ -11,7 +11,7 @@
     style="@style/TextAutoComplete"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/spacing_normal"
+    android:padding="@dimen/spacing_normal"
     android:background="?android:attr/selectableItemBackground"
     tools:text="Clinique Brossard" />
 

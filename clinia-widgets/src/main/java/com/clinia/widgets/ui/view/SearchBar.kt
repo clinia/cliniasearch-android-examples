@@ -13,7 +13,8 @@ class SearchBar @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
-    private fun getQuery() = if (searchEditText?.text.isNullOrEmpty()) "" else  searchEditText?.text.toString()
+    private fun getQuery() =
+        if (searchEditText?.text.isNullOrEmpty()) "" else searchEditText?.text.toString()
 
     lateinit var listener: SearchBarListener
 
@@ -30,20 +31,11 @@ class SearchBar @JvmOverloads constructor(
         searchEditText.setOnFocusChangeListener { _, b ->
             listener.onSearchBarFocusChanged(b)
         }
-//        searchEditText.doOnTextChanged { text, start, count, after ->
-//        }
         searchEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
-            override fun beforeTextChanged(
-                s: CharSequence, start: Int,
-                count: Int, after: Int
-            ) {
-            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
-            override fun onTextChanged(
-                s: CharSequence, start: Int,
-                before: Int, count: Int
-            ) {
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 listener.onSearchBarTextChange(getQuery())
             }
         })

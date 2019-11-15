@@ -45,11 +45,11 @@ class AutoComplete @JvmOverloads constructor(
         autoCompleteList.layoutManager = LinearLayoutManager(context)
     }
 
-    fun setAutoCompleteItems(items: List<QuerySuggestion>) {
+    fun setAutoCompleteItems(items: List<Any>) {
         adapter.setAutoCompleteItems(items)
     }
 
     interface AutoCompleteListener {
-        fun onAutoCompleteItemClicked(querySuggestion: QuerySuggestion)
+        fun onAutoCompleteItemClicked(suggestion: Any)
     }
 }
