@@ -30,12 +30,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     //call this method to trigger a search with the saved parameters
-    fun search() {
+    private fun search() {
         search(query, locationQuery)
     }
 
     //call this method to access the data
-    fun getSearchData(): LiveData<SearchResponse> = searchData
+    fun getSearchData(): LiveData<SearchResponse> {
+        search()
+        return searchData
+    }
 
     fun querySuggest(
         query: String,
@@ -55,7 +58,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun search(query: String?, location: String?) {
-        val search = SingleIndexSearchRequest(query)
+        val search = SingleIndexSearchRequest(query = query, location = location)
 //        location?.let {
 //            if (it.isBlank() or it.isEmpty()) {
 //                locationQuery = it
