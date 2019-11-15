@@ -43,13 +43,11 @@ class ResultAdapter(private val context: Context, private var data: MutableList<
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-//        setAttributes(holder)
-
         holder.resultCard.type.text = data[position].type
         data[position].distance?.let {
             holder.resultCard.distance.text = Formatter().format(
                 context.resources.getString(R.string.record_distance),
-                it
+                it/1000
             ).toString()
             holder.resultCard.distance.visibility = View.VISIBLE
         }
