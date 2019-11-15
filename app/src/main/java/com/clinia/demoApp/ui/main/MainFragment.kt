@@ -70,6 +70,10 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener,
         })
     }
 
+    override fun onSearchBarCleared() {
+        autoComplete.visibility = View.GONE
+    }
+
     override fun onLocationSearchBarFocusChanged(hasFocus: Boolean) {
         autoComplete.visibility = if (hasFocus) View.VISIBLE else View.INVISIBLE
     }
@@ -94,11 +98,13 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener,
             suggestion.suggestion?.let {it ->
                 viewModel.query = it
                 searchBar.setQuery(it)
+                searchBar.clearFocus()
             }
         } else if (suggestion is PlaceSuggestion) {
             suggestion.formattedAddress?.let {
                 viewModel.locationQuery = it
                 locationSearchBar.setLocation(it)
+                locationSearchBar.clearFocus()
             }
         }
         viewModel.getSearchData().observe(this, Observer {

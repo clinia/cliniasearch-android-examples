@@ -19,10 +19,8 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="TextAutoCompleteTitle" parent="TextAppearance.AppCompat.Headline">
-        <item name="android:textSize">@dimen/font_normal</item>
+    <style name="TextAutoCompleteTitle">
         <item name="android:textAllCaps">true</item>
-        <item name="android:textColor">@color/lightGray</item>
     </style>
 
     <style name="TextAutoComplete" parent="TextAppearance.AppCompat.Body1">

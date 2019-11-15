@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
 import com.clinia.widgets.R
+import com.clinia.widgets.ui.onRightDrawableClicked
 import kotlinx.android.synthetic.main.view_search.view.*
 
 class SearchBar @JvmOverloads constructor(
@@ -44,6 +45,10 @@ class SearchBar @JvmOverloads constructor(
                 listener.onSearchBarEnter(getQuery())
             false
         }
+        searchEditText.onRightDrawableClicked {
+            setQuery("")
+            listener.onSearchBarCleared()
+        }
     }
 
     fun setQuery(query: String) {
@@ -54,5 +59,6 @@ class SearchBar @JvmOverloads constructor(
         fun onSearchBarFocusChanged(hasFocus: Boolean)
         fun onSearchBarEnter(query: String)
         fun onSearchBarTextChange(query: String)
+        fun onSearchBarCleared()
     }
 }

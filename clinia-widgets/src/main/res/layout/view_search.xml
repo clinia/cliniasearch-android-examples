@@ -14,6 +14,8 @@
             android:id="@+id/searchEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_clear"
+            android:drawableTint="@color/gray"
             android:background="@null"
             android:drawablePadding="@dimen/spacing_tiny"
             android:imeOptions="actionSearch"
