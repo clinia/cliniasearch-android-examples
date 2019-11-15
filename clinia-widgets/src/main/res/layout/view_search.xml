@@ -8,14 +8,15 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/searchInputLayout"
         style="@style/AppTheme.SearchBar"
-        app:startIconDrawable="@drawable/ic_search">
+        app:startIconDrawable="@drawable/ic_search"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/ic_clear"
+        app:endIconTint="@color/gray">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/searchEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/ic_clear"
-            android:drawableTint="@color/gray"
             android:background="@null"
             android:drawablePadding="@dimen/spacing_tiny"
             android:imeOptions="actionSearch"

@@ -4,11 +4,9 @@ import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
 import com.clinia.widgets.R
-import com.clinia.widgets.ui.onRightDrawableClicked
 import kotlinx.android.synthetic.main.view_location_search.view.*
 
 //class SearchBar @JvmOverloads constructor(
@@ -26,7 +24,7 @@ class LocationSearchBar @JvmOverloads constructor(
 
     init {
         inflate(context, R.layout.view_location_search, this)
-
+        locationInputLayout.isEndIconVisible = false
         context.obtainStyledAttributes(attrs, R.styleable.LocationSearchBar).apply {
             try {
                 locationEditText.hint = getString(R.styleable.LocationSearchBar_hintLocation)
@@ -38,7 +36,9 @@ class LocationSearchBar @JvmOverloads constructor(
             listener.onLocationSearchBarFocusChanged(b)
         }
         locationEditText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {}
+            override fun afterTextChanged(p0: Editable?) {
+                locationInputLayout.isEndIconVisible = !locationEditText.text.isNullOrEmpty()
+            }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -50,9 +50,10 @@ class LocationSearchBar @JvmOverloads constructor(
                 listener.onLocationSearchBarEnter(getLocation())
             false
         }
-        locationEditText.onRightDrawableClicked {
+        locationInputLayout.setEndIconOnClickListener {
             setLocation("")
             listener.onLocationSearchBarCleared()
+            locationInputLayout.isEndIconVisible = false
         }
     }
 

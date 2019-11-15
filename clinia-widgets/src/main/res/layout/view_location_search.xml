@@ -9,16 +9,17 @@
         android:id="@+id/locationInputLayout"
         style="@style/AppTheme.SearchBar"
         app:startIconDrawable="@drawable/ic_my_location"
-        app:startIconTint="@color/colorAccent">
+        app:startIconTint="@color/colorAccent"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/ic_clear"
+        app:endIconTint="@color/gray">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/locationEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:drawableEnd="@drawable/ic_clear"
             android:drawablePadding="@dimen/spacing_tiny"
-            android:drawableTint="@color/gray"
             android:imeOptions="actionSearch"
             android:importantForAutofill="no"
             android:inputType="textAutoComplete"

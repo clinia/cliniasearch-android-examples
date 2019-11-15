@@ -7,7 +7,6 @@ import android.util.AttributeSet
 import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
 import com.clinia.widgets.R
-import com.clinia.widgets.ui.onRightDrawableClicked
 import kotlinx.android.synthetic.main.view_search.view.*
 
 class SearchBar @JvmOverloads constructor(
@@ -21,7 +20,7 @@ class SearchBar @JvmOverloads constructor(
 
     init {
         inflate(context, R.layout.view_search, this)
-
+        searchInputLayout.isEndIconVisible = false
         context.obtainStyledAttributes(attrs, R.styleable.SearchBar).apply {
             try {
                 searchEditText.hint = getString(R.styleable.SearchBar_hintSearch)
@@ -34,11 +33,7 @@ class SearchBar @JvmOverloads constructor(
         }
         searchEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
-//                searchEditText.setCompoundDrawablesWithIntrinsicBounds(
-//                    0, 0,
-//                    if (searchEditText.text.isNullOrEmpty()) 0 else R.drawable.ic_clear,
-//                    0
-//                )
+                searchInputLayout.isEndIconVisible = !searchEditText.text.isNullOrEmpty()
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -52,9 +47,10 @@ class SearchBar @JvmOverloads constructor(
                 listener.onSearchBarEnter(getQuery())
             false
         }
-        searchEditText.onRightDrawableClicked {
+        searchInputLayout.setEndIconOnClickListener {
             setQuery("")
             listener.onSearchBarCleared()
+            searchInputLayout.isEndIconVisible = false
         }
     }
 
