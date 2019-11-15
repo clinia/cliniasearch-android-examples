@@ -33,7 +33,14 @@ class SearchBar @JvmOverloads constructor(
             listener.onSearchBarFocusChanged(b)
         }
         searchEditText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable) {}
+            override fun afterTextChanged(s: Editable) {
+//                searchEditText.setCompoundDrawablesWithIntrinsicBounds(
+//                    0, 0,
+//                    if (searchEditText.text.isNullOrEmpty()) 0 else R.drawable.ic_clear,
+//                    0
+//                )
+            }
+
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
