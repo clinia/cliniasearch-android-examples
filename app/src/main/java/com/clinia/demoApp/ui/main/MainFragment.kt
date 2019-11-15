@@ -60,6 +60,7 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener,
         viewModel.getSearchData().observe(this, Observer {
             adapter?.setData(it.records as MutableList<HealthFacility>)
         })
+        autoComplete.visibility = View.GONE
     }
 
     override fun onSearchBarTextChange(query: String) {
@@ -67,8 +68,6 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener,
         viewModel.querySuggest(query).observe(this, Observer {
             autoComplete.setAutoCompleteItems(it)
         })
-        //TODO: Add search as you type
-//        if (searchBar.)
     }
 
     override fun onLocationSearchBarFocusChanged(hasFocus: Boolean) {
@@ -80,6 +79,7 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener,
         viewModel.getSearchData().observe(this, Observer {
             adapter?.setData(it.records as MutableList<HealthFacility>)
         })
+        autoComplete.visibility = View.GONE
     }
 
     override fun onLocationSearchBarTextChange(location: String) {
@@ -87,8 +87,6 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener,
         viewModel.placeSuggest(location, null).observe(this, Observer {
             autoComplete.setAutoCompleteItems(it)
         })
-        //TODO: Add search as you type
-//        if (searchBar.)
     }
 
     override fun onAutoCompleteItemClicked(suggestion: Any) {

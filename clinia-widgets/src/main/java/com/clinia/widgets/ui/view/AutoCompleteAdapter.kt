@@ -15,7 +15,6 @@ class AutoCompleteAdapter(
 ) :
     RecyclerView.Adapter<BaseViewHolder<*>>() {
 
-
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): BaseViewHolder<*> {
         return when (i) {
             TYPE_QUERY -> QueryViewHolder(
