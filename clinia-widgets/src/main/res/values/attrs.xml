@@ -3,21 +3,11 @@
     <declare-styleable name="SearchBar">
         <attr name="hintSearch" format="string"/>
         <attr name="tint" format="color"/>
-        <attr name="statusSearchBar" format="enum">
-            <enum name="hidden" value="0" />
-            <enum name="optional" value="1" />
-            <enum name="required" value="2" />
-        </attr>
     </declare-styleable>
 
     <declare-styleable name="LocationSearchBar">
         <attr name="hintLocation" format="string"/>
         <attr name="tintLocation" format="color"/>
-        <attr name="statusLocationSearchBar" format="enum">
-            <enum name="hidden" value="0" />
-            <enum name="optional" value="1" />
-            <enum name="required" value="2" />
-        </attr>
     </declare-styleable>
 
     <declare-styleable name="ResultsList">

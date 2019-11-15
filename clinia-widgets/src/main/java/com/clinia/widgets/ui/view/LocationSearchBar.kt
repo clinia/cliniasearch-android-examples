@@ -19,7 +19,6 @@ class LocationSearchBar @JvmOverloads constructor(
     private fun getLocation() = if (locationEditText?.text.isNullOrEmpty()) "" else locationEditText?.text.toString()
 
     lateinit var listener: LocationSearchBarListener
-    private var isRequired: Boolean = false
 
     init {
         inflate(context, R.layout.view_location_search, this)
@@ -27,15 +26,6 @@ class LocationSearchBar @JvmOverloads constructor(
         context.obtainStyledAttributes(attrs, R.styleable.LocationSearchBar).apply {
             try {
                 locationEditText.hint = getString(R.styleable.LocationSearchBar_hintLocation)
-
-                when (getInt(R.styleable.LocationSearchBar_statusLocationSearchBar, 1)) {
-                    0 -> locationInputLayout.visibility = View.GONE
-                    1 -> locationInputLayout.visibility = View.VISIBLE
-                    2 -> {
-                        locationInputLayout.visibility = View.VISIBLE
-                        isRequired = true
-                    }
-                }
             } finally {
                 recycle()
             }
