@@ -1,16 +1,13 @@
 package com.clinia.widgets.ui.view
 
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.AttributeSet
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
 import com.clinia.widgets.R
 import kotlinx.android.synthetic.main.view_search.view.*
-
-//class SearchBar @JvmOverloads constructor(
-//    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-//) : LinearLayout(context, attrs, defStyleAttr) {
 
 class SearchBar @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -30,6 +27,26 @@ class SearchBar @JvmOverloads constructor(
                 recycle()
             }
         }
+        searchEditText.setOnFocusChangeListener { _, b ->
+            listener.onSearchBarFocusChanged(b)
+        }
+//        searchEditText.doOnTextChanged { text, start, count, after ->
+//        }
+        searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int,
+                count: Int, after: Int
+            ) {
+            }
+
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
+                listener.onSearchBarTextChange(getQuery())
+            }
+        })
         searchEditText.setOnEditorActionListener { _, p1, _ ->
             if (p1 == EditorInfo.IME_ACTION_SEARCH)
                 listener.onSearchBarEnter(getQuery())
@@ -37,8 +54,13 @@ class SearchBar @JvmOverloads constructor(
         }
     }
 
+    fun setQuery(query: String) {
+        searchEditText.setText(query)
+    }
+
     interface SearchBarListener {
+        fun onSearchBarFocusChanged(hasFocus: Boolean)
         fun onSearchBarEnter(query: String)
-        fun onSearchBarTextChange()
+        fun onSearchBarTextChange(query: String)
     }
 }

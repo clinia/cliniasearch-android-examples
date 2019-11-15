@@ -22,8 +22,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private var searchData = MutableLiveData<SearchResponse>()
     private var searchMetadata = MutableLiveData<Metadata>()
-    private var querySuggestions = MutableLiveData<Array<QuerySuggestion>>()
-    private var placeSuggestions = MutableLiveData<Array<PlaceSuggestion>>()
+    private var querySuggestions = MutableLiveData<List<QuerySuggestion>>()
+    private var placeSuggestions = MutableLiveData<List<PlaceSuggestion>>()
 
     init {
         search()
@@ -44,7 +44,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         query: String,
         preTag: String? = null,
         postTag: String? = null
-    ): LiveData<Array<QuerySuggestion>> {
+    ): LiveData<List<QuerySuggestion>> {
         querySuggest(QuerySuggestionRequest(query, preTag, postTag))
         return querySuggestions
     }

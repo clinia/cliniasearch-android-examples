@@ -13,7 +13,7 @@ interface QuerySuggestionService {
             @Header("Content-Type") auth: String = contentType,
             @Query("x-clinia-application-id") api: String = application,
             @Query("x-clinia-api-key") key: String = apiKey
-    ): Call<Array<QuerySuggestion>>
+    ): Call<List<QuerySuggestion>>
 }
 
 data class QuerySuggestionRequest(

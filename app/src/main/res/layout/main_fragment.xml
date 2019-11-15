@@ -13,7 +13,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        app:statusSearchBar="optional"
         android:paddingStart="@dimen/spacing_normal"
         android:paddingEnd="@dimen/spacing_normal"
         app:hintSearch="Rechercher une clinique, specialiste, etc."
@@ -27,7 +26,6 @@
         android:id="@+id/locationSearchBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:statusLocationSearchBar="optional"
         android:paddingStart="@dimen/spacing_normal"
         android:paddingEnd="@dimen/spacing_normal"
         app:layout_constraintBottom_toTopOf="@id/resultsList"
@@ -44,7 +42,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/locationSearchBar"
-        app:titleTextColor="@color/colorPrimary"/>
+        app:layout_constraintTop_toBottomOf="@id/locationSearchBar"/>
 
+    <com.clinia.widgets.ui.view.AutoComplete
+        android:id="@+id/autoComplete"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/locationSearchBar"
+        app:title="Suggestions"
+        app:titleTextSize="16sp"
+        android:visibility="gone"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

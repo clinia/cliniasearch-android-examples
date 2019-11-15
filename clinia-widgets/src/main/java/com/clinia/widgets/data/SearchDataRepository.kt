@@ -66,14 +66,14 @@ class SearchDataRepository {
         return data
     }
 
-    fun getQuerySuggestions(request: QuerySuggestionRequest): MutableLiveData<Array<QuerySuggestion>> {
-        val data = MutableLiveData<Array<QuerySuggestion>>()
-        NetworkManager.querySuggestionService.suggest(request).enqueue(object : Callback<Array<QuerySuggestion>> {
-            override fun onFailure(call: Call<Array<QuerySuggestion>>?, t: Throwable?) {
+    fun getQuerySuggestions(request: QuerySuggestionRequest): MutableLiveData<List<QuerySuggestion>> {
+        val data = MutableLiveData<List<QuerySuggestion>>()
+        NetworkManager.querySuggestionService.suggest(request).enqueue(object : Callback<List<QuerySuggestion>> {
+            override fun onFailure(call: Call<List<QuerySuggestion>>?, t: Throwable?) {
                 t?.let { Log.e(this.javaClass.simpleName, "onFailure message: ${t.message}") }
             }
 
-            override fun onResponse(call: Call<Array<QuerySuggestion>>?, response: Response<Array<QuerySuggestion>>?) {
+            override fun onResponse(call: Call<List<QuerySuggestion>>?, response: Response<List<QuerySuggestion>>?) {
                 response?.let {
                     if (it.isSuccessful)
                         data.postValue(it.body())
@@ -85,14 +85,14 @@ class SearchDataRepository {
         return data
     }
 
-    fun getPlaceSuggestions(request: PlaceSuggestionRequest): MutableLiveData<Array<PlaceSuggestion>> {
-        val data = MutableLiveData<Array<PlaceSuggestion>>()
-        NetworkManager.placeSuggestionService.suggest(request.input, request.country, request.size).enqueue(object : Callback<Array<PlaceSuggestion>> {
-            override fun onFailure(call: Call<Array<PlaceSuggestion>>?, t: Throwable?) {
+    fun getPlaceSuggestions(request: PlaceSuggestionRequest): MutableLiveData<List<PlaceSuggestion>> {
+        val data = MutableLiveData<List<PlaceSuggestion>>()
+        NetworkManager.placeSuggestionService.suggest(request.input, request.country, request.size).enqueue(object : Callback<List<PlaceSuggestion>> {
+            override fun onFailure(call: Call<List<PlaceSuggestion>>?, t: Throwable?) {
                 t?.let { Log.e(this.javaClass.simpleName, "onFailure message: ${t.message}") }
             }
 
-            override fun onResponse(call: Call<Array<PlaceSuggestion>>?, response: Response<Array<PlaceSuggestion>>?) {
+            override fun onResponse(call: Call<List<PlaceSuggestion>>?, response: Response<List<PlaceSuggestion>>?) {
                 response?.let {
                     if (it.isSuccessful)
                         data.postValue(it.body())

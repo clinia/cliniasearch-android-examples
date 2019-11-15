@@ -10,21 +10,10 @@
         <attr name="tintLocation" format="color"/>
     </declare-styleable>
 
-    <declare-styleable name="ResultsList">
-        <attr name="minCardHeight" format="dimension"/>
-        <attr name="titleTextColor" format="color"/>
+    <declare-styleable name="AutoComplete">
+        <attr name="title" format="string"/>
         <attr name="titleTextSize" format="dimension"/>
-        <attr name="descriptionTextColor" format="color"/>
-        <attr name="descriptionTextSize" format="dimension"/>
-        <attr name="typeTextColor" format="color"/>
-        <attr name="typeTextSize" format="dimension"/>
-        <attr name="distanceTextColor" format="color"/>
-        <attr name="distanceTextSize" format="dimension"/>
-        <attr name="showDistance" format="boolean"/>
-        <attr name="showDirectionsButton" format="boolean"/>
-        <attr name="showCallButton" format="boolean"/>
-        <attr name="showOpeningHours" format="boolean"/>
-        <attr name="showAddress" format="boolean"/>
-        <attr name="buttonTextColor" format="color"/>
+        <attr name="titleTextColor" format="color"/>
     </declare-styleable>
+
 </resources>

@@ -10,13 +10,16 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.clinia.widgets.R
 import com.clinia.widgets.data.HealthFacility
+import com.clinia.widgets.data.QuerySuggestion
 import com.clinia.widgets.ui.main.MainViewModel
+import com.clinia.widgets.ui.view.AutoComplete
 import com.clinia.widgets.ui.view.LocationSearchBar
 import com.clinia.widgets.ui.view.ResultAdapter
 import com.clinia.widgets.ui.view.SearchBar
 import kotlinx.android.synthetic.main.main_fragment.*
 
-class MainFragment : Fragment(), SearchBar.SearchBarListener, LocationSearchBar.LocationSearchBarListener {
+class MainFragment : Fragment(), SearchBar.SearchBarListener,
+    LocationSearchBar.LocationSearchBarListener, AutoComplete.AutoCompleteListener {
 
     private lateinit var viewModel: MainViewModel
 
@@ -44,6 +47,11 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener, LocationSearchBar.
                 adapter?.setData(searchResponse.records as MutableList<HealthFacility>)
             })
         }
+        autoComplete.listener = this
+    }
+
+    override fun onSearchBarFocusChanged(hasFocus: Boolean) {
+        autoComplete.visibility = if (hasFocus) View.VISIBLE else View.INVISIBLE
     }
 
     override fun onSearchBarEnter(query: String) {
@@ -53,9 +61,13 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener, LocationSearchBar.
         })
     }
 
-    override fun onSearchBarTextChange() {
+    override fun onSearchBarTextChange(query: String) {
+        autoComplete.visibility = View.VISIBLE 
+        viewModel.querySuggest(query).observe(this, Observer {
+            autoComplete.setAutoCompleteItems(it)
+        })
+        //TODO: Add search as you type
 //        if (searchBar.)
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onLocationSearchBarEnter(location: String) {
@@ -69,7 +81,15 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener, LocationSearchBar.
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-
+    override fun onAutoCompleteItemClicked(querySuggestion: QuerySuggestion) {
+        querySuggestion.suggestion?.let {suggestion ->
+            viewModel.query = suggestion
+            searchBar.setQuery(suggestion)
+            viewModel.getSearchData().observe(this, Observer {
+                adapter?.setData(it.records as MutableList<HealthFacility>)
+            })
+        }
+    }
 
     companion object {
         fun newInstance() = MainFragment()
