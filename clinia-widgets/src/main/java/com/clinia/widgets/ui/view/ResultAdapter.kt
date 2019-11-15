@@ -13,9 +13,12 @@ import com.clinia.widgets.R
 import com.clinia.widgets.data.HealthFacility
 import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.result_card_view.view.*
+import java.util.*
 
 class ResultAdapter(private val context: Context, private var data: MutableList<HealthFacility>) :
     RecyclerView.Adapter<ResultAdapter.ViewHolder>() {
+
+    var onLoadMoreListener: OnLoadMoreListener? = null
 
     class ViewHolder(val resultCard: MaterialCardView) : RecyclerView.ViewHolder(resultCard)
 
@@ -44,7 +47,10 @@ class ResultAdapter(private val context: Context, private var data: MutableList<
 
         holder.resultCard.type.text = data[position].type
         data[position].distance?.let {
-            holder.resultCard.distance.text = it.toString()
+            holder.resultCard.distance.text = Formatter().format(
+                context.resources.getString(R.string.record_distance),
+                it
+            ).toString()
             holder.resultCard.distance.visibility = View.VISIBLE
         }
         data[position].name?.let {
@@ -91,6 +97,10 @@ class ResultAdapter(private val context: Context, private var data: MutableList<
     }
 
     override fun getItemCount() = data.size
+
+    interface OnLoadMoreListener {
+        fun onLoadMore()
+    }
 
     private fun setAttributes(holder: ViewHolder, attrs: AttributeSet) {
         context.obtainStyledAttributes(attrs, R.styleable.ResultsList).apply {

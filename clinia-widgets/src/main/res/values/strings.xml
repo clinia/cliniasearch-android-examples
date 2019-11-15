@@ -5,6 +5,7 @@
     <string name="direction">direction</string>
 
     <string name="record_address" translatable="false">%1$s, %2$s</string>
+    <string name="record_distance" translatable="false">%,.1f km</string>
     <string name="record_opening_hours_open_now">Open now until %1$s</string>
     <string name="record_opening_hours_closed">CLOSED. Opens %1$s at %2$s</string>
 </resources>
