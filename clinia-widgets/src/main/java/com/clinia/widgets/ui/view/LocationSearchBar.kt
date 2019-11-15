@@ -8,6 +8,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
 import com.clinia.widgets.R
+import com.clinia.widgets.ui.onRightDrawableClicked
 import kotlinx.android.synthetic.main.view_location_search.view.*
 
 //class SearchBar @JvmOverloads constructor(
@@ -49,6 +50,10 @@ class LocationSearchBar @JvmOverloads constructor(
                 listener.onLocationSearchBarEnter(getLocation())
             false
         }
+        locationEditText.onRightDrawableClicked {
+            setLocation("")
+            listener.onLocationSearchBarCleared()
+        }
     }
 
     fun setLocation(location: String) {
@@ -59,5 +64,6 @@ class LocationSearchBar @JvmOverloads constructor(
         fun onLocationSearchBarFocusChanged(hasFocus: Boolean)
         fun onLocationSearchBarEnter(location: String)
         fun onLocationSearchBarTextChange(location: String)
+        fun onLocationSearchBarCleared()
     }
 }

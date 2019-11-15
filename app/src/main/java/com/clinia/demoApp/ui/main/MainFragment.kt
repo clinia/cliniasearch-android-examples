@@ -93,6 +93,10 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener,
         })
     }
 
+    override fun onLocationSearchBarCleared() {
+        autoComplete.visibility = View.GONE
+    }
+
     override fun onAutoCompleteItemClicked(suggestion: Any) {
         if (suggestion is QuerySuggestion) {
             suggestion.suggestion?.let {it ->
