@@ -15,12 +15,16 @@ import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.result_card_view.view.*
 import java.util.*
 
-class ResultAdapter(private val context: Context, private var data: MutableList<HealthFacility>) :
+class ResultAdapter(
+    private val context: Context,
+    private var data: MutableList<HealthFacility>,
+    val onClick: ((HealthFacility) -> Unit)? = null
+) :
     RecyclerView.Adapter<ResultAdapter.ViewHolder>() {
 
     var onLoadMoreListener: OnLoadMoreListener? = null
 
-    class ViewHolder(val resultCard: MaterialCardView) : RecyclerView.ViewHolder(resultCard)
+    inner class ViewHolder(val resultCard: MaterialCardView) : RecyclerView.ViewHolder(resultCard)
 
     fun setData(mutableList: MutableList<HealthFacility>) {
         data = mutableList
@@ -47,6 +51,9 @@ class ResultAdapter(private val context: Context, private var data: MutableList<
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
+        holder.itemView.setOnClickListener {
+            onClick?.invoke((data[position]))
+        }
         holder.resultCard.type.text = data[position].type
         data[position].distance?.let {
             holder.resultCard.distance.text = Formatter().format(

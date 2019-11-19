@@ -2,12 +2,14 @@ package com.clinia.widgets.ui.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.clinia.widgets.R
 import com.clinia.widgets.data.HealthFacility
 import com.clinia.widgets.ui.main.MainViewModel
@@ -19,7 +21,6 @@ import kotlinx.android.synthetic.main.results_map.*
 
 
 class ResultsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
-
     private lateinit var viewModel: MainViewModel
     private var adapter: ResultAdapter? = null
 
@@ -39,8 +40,8 @@ class ResultsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
         activity?.let {
             viewModel = ViewModelProviders.of(it).get(MainViewModel::class.java)
         }
-        context?.let {
-            adapter = ResultAdapter(it, mutableListOf())
+        context?.let { context ->
+            adapter = ResultAdapter(context, mutableListOf()) { moveMapTo(it) }
             resultsList.adapter = adapter
             resultsList.layoutManager =
                 LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
@@ -52,12 +53,12 @@ class ResultsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
             adapter?.setData(it.records as MutableList<HealthFacility>)
             // Creating a marker
             for (record in it.records as MutableList<HealthFacility>) {
-                record.geoPoint?.let {
+                record.geoPoint?.let { geo ->
                     val markerOptions = MarkerOptions()
                         .position(
                             LatLng(
-                                record.geoPoint.lat.toDouble(),
-                                record.geoPoint.lng.toDouble()
+                                geo.lat.toDouble(),
+                                geo.lng.toDouble()
                             )
                         )
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker))
@@ -76,7 +77,19 @@ class ResultsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
         map?.isMyLocationEnabled = true
 
         map?.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.mapstyle))
-        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(45.530243, -73.565260), 13f))
+        //TODO: change to device position if search uses it
+        viewModel.getSearchData().observe(this, Observer {
+            (it.records.first() as HealthFacility).geoPoint?.let { geo ->
+                map?.moveCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        LatLng(
+                            geo.lat.toDouble(),
+                            geo.lng.toDouble()
+                        ), 13f
+                    )
+                )
+            }
+        })
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
@@ -87,6 +100,19 @@ class ResultsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
         )
         previousMarker = marker
         return false
+    }
+
+    private fun moveMapTo(healthFacility: HealthFacility) {
+        healthFacility.geoPoint?.let {
+            map?.moveCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    LatLng(
+                        it.lat.toDouble(),
+                        it.lng.toDouble()
+                    ), 13f
+                )
+            )
+        }
     }
 
     override fun onResume() {
