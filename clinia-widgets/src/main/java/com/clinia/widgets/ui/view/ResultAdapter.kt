@@ -47,7 +47,7 @@ class ResultAdapter(private val context: Context, private var data: MutableList<
         data[position].distance?.let {
             holder.resultCard.distance.text = Formatter().format(
                 context.resources.getString(R.string.record_distance),
-                it/1000
+                it / 1000
             ).toString()
             holder.resultCard.distance.visibility = View.VISIBLE
         }
@@ -74,11 +74,14 @@ class ResultAdapter(private val context: Context, private var data: MutableList<
             if (data[position].phones.isNullOrEmpty()) View.GONE else View.VISIBLE
         holder.resultCard.directionsBtn.setOnClickListener {
             //maps intent using geopoint
-            data[position].geoPoint?.let {
-                val gmmIntentUri = Uri.parse("google.navigation:q=${it.lat}, ${it.lng}")
-                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-                mapIntent.setPackage("com.google.android.apps.maps")
-                context.startActivity(mapIntent)
+            data[position].geoPoint?.let { geo ->
+                data[position].address?.let { address ->
+                    val gmmIntentUri =
+                        Uri.parse("geo:${geo.lat}, ${geo.lng}?q=${address.streetAddress}, ${address.place}")
+                    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                    mapIntent.setPackage("com.google.android.apps.maps")
+                    context.startActivity(mapIntent)
+                }
             }
         }
         holder.resultCard.callBtn.visibility =
