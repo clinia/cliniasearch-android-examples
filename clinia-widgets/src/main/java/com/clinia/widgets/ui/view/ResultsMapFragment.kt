@@ -2,14 +2,12 @@ package com.clinia.widgets.ui.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.clinia.widgets.R
 import com.clinia.widgets.data.HealthFacility
 import com.clinia.widgets.ui.main.MainViewModel
@@ -26,6 +24,7 @@ class ResultsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
 
     private var map: GoogleMap? = null
     private var previousMarker: Marker? = null
+    private var bounds: LatLngBounds? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,7 +50,10 @@ class ResultsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
 
         viewModel.getSearchData().observe(this, Observer {
             adapter?.setData(it.records as MutableList<HealthFacility>)
-            // Creating a marker
+
+            //calculate zoom to show all markers at once
+            val builder = LatLngBounds.Builder()
+            // Creating markers
             for (record in it.records as MutableList<HealthFacility>) {
                 record.geoPoint?.let { geo ->
                     val markerOptions = MarkerOptions()
@@ -65,9 +67,12 @@ class ResultsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
                         .alpha(1f)
                     map?.addMarker(markerOptions)
                         ?.tag = record.id
+                    builder.include(markerOptions.position)
                 }
             }
             map?.setOnMarkerClickListener(this)
+            bounds = builder.build()
+            map?.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0))
         })
     }
 
@@ -77,19 +82,8 @@ class ResultsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
         map?.isMyLocationEnabled = true
 
         map?.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.mapstyle))
-        //TODO: change to device position if search uses it
-        viewModel.getSearchData().observe(this, Observer {
-            (it.records.first() as HealthFacility).geoPoint?.let { geo ->
-                map?.moveCamera(
-                    CameraUpdateFactory.newLatLngZoom(
-                        LatLng(
-                            geo.lat.toDouble(),
-                            geo.lng.toDouble()
-                        ), 13f
-                    )
-                )
-            }
-        })
+
+        //zoom to show all markers
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
