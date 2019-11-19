@@ -88,7 +88,7 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener,
 
     override fun onLocationSearchBarTextChange(location: String) {
         autoComplete.visibility = View.VISIBLE
-        viewModel.placeSuggest(location, null).observe(this, Observer {
+        viewModel.placeSuggest(location, "CA").observe(this, Observer {
             autoComplete.setAutoCompleteItems(it)
         })
     }
