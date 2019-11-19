@@ -83,5 +83,5 @@ nexusStaging {
     password = System.getenv("NEXUS_PASSWORD")
     stagingProfileId = ''
     numberOfRetries = 3
-    delayBetweenRetiresInMillis = 3000
+    delayBetweenRetriesInMillis = 3000
 }

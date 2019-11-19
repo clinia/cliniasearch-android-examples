@@ -32,5 +32,6 @@
     <!-- cards -->
     <dimen name="default_corner_radius">5dp</dimen>
     <dimen name="result_card_min_height">200dp</dimen>
+    <dimen name="autocomplete_item_icon_size">24dp</dimen>
 
 </resources>

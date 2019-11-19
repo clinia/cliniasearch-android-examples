@@ -16,7 +16,7 @@ interface PlaceSuggestionService {
             @Query("x-clinia-application-id") api: String = application,
             @Query("x-clinia-api-key") key: String = apiKey,
             @Header("Content-Type") auth: String = contentType
-    ): Call<Array<PlaceSuggestion>>
+    ): Call<List<PlaceSuggestion>>
 }
 
 data class PlaceSuggestionRequest(

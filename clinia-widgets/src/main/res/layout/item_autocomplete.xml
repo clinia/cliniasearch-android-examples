@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:orientation="horizontal"-->
+<!--    android:layout_margin="@dimen/spacing_normal"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content">-->
+
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/autoCompleteItem"
+    style="@style/TextAutoComplete"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/spacing_normal"
+    android:background="?android:attr/selectableItemBackground"
+    tools:text="Clinique Brossard" />
+
+    <!--    android:drawableStart="@drawable/ic_my_location"-->
+    <!--    android:drawablePadding="@dimen/spacing_normal"-->
+    <!--    android:drawableTint="@color/darkGray"-->
+    <!--</LinearLayout>-->

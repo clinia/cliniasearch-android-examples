@@ -8,7 +8,10 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/searchInputLayout"
         style="@style/AppTheme.SearchBar"
-        app:startIconDrawable="@drawable/ic_search">
+        app:startIconDrawable="@drawable/ic_search"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/ic_clear"
+        app:endIconTint="@color/gray">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/searchEditText"

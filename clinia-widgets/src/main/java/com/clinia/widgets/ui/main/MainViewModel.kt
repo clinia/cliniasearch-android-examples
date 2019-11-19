@@ -8,6 +8,7 @@ import com.clinia.widgets.data.PlaceSuggestion
 import com.clinia.widgets.data.QuerySuggestion
 import com.clinia.widgets.data.SearchResponse
 import com.clinia.widgets.data.SearchDataRepository
+import com.clinia.widgets.data.network.PlaceSuggestionRequest
 import com.clinia.widgets.data.network.QuerySuggestionRequest
 import com.clinia.widgets.data.network.SingleIndexSearchRequest
 
@@ -22,28 +23,39 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private var searchData = MutableLiveData<SearchResponse>()
     private var searchMetadata = MutableLiveData<Metadata>()
-    private var querySuggestions = MutableLiveData<Array<QuerySuggestion>>()
-    private var placeSuggestions = MutableLiveData<Array<PlaceSuggestion>>()
+    private var querySuggestions = MutableLiveData<List<QuerySuggestion>>()
+    private var placeSuggestions = MutableLiveData<List<PlaceSuggestion>>()
 
     init {
         search()
     }
 
     //call this method to trigger a search with the saved parameters
-    fun search() {
+    private fun search() {
         search(query, locationQuery)
     }
 
     //call this method to access the data
-    fun getSearchData(): LiveData<SearchResponse> = searchData
+    fun getSearchData(): LiveData<SearchResponse> {
+        search()
+        return searchData
+    }
 
     fun querySuggest(
         query: String,
         preTag: String? = null,
         postTag: String? = null
-    ): LiveData<Array<QuerySuggestion>> {
+    ): LiveData<List<QuerySuggestion>> {
         querySuggest(QuerySuggestionRequest(query, preTag, postTag))
         return querySuggestions
+    }
+
+    fun placeSuggest(
+        location: String,
+        country: String?
+    ): LiveData<List<PlaceSuggestion>> {
+        placeSuggest(PlaceSuggestionRequest(location, country))
+        return placeSuggestions
     }
 
     private fun search(query: String?, location: Location?) {
@@ -55,7 +67,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun search(query: String?, location: String?) {
-        val search = SingleIndexSearchRequest(query)
+        val search = SingleIndexSearchRequest(query = query, location = location)
 //        location?.let {
 //            if (it.isBlank() or it.isEmpty()) {
 //                locationQuery = it
@@ -76,4 +88,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private fun querySuggest(query: QuerySuggestionRequest) {
         querySuggestions = dataRepository.getQuerySuggestions(query)
     }
+
+    private fun placeSuggest(query: PlaceSuggestionRequest) {
+        placeSuggestions = dataRepository.getPlaceSuggestions(query)
+    }
+
 }

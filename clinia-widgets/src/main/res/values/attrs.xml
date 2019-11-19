@@ -3,38 +3,17 @@
     <declare-styleable name="SearchBar">
         <attr name="hintSearch" format="string"/>
         <attr name="tint" format="color"/>
-        <attr name="statusSearchBar" format="enum">
-            <enum name="hidden" value="0" />
-            <enum name="optional" value="1" />
-            <enum name="required" value="2" />
-        </attr>
     </declare-styleable>
 
     <declare-styleable name="LocationSearchBar">
         <attr name="hintLocation" format="string"/>
         <attr name="tintLocation" format="color"/>
-        <attr name="statusLocationSearchBar" format="enum">
-            <enum name="hidden" value="0" />
-            <enum name="optional" value="1" />
-            <enum name="required" value="2" />
-        </attr>
     </declare-styleable>
 
-    <declare-styleable name="ResultsList">
-        <attr name="minCardHeight" format="dimension"/>
-        <attr name="titleTextColor" format="color"/>
+    <declare-styleable name="AutoComplete">
+        <attr name="title" format="string"/>
         <attr name="titleTextSize" format="dimension"/>
-        <attr name="descriptionTextColor" format="color"/>
-        <attr name="descriptionTextSize" format="dimension"/>
-        <attr name="typeTextColor" format="color"/>
-        <attr name="typeTextSize" format="dimension"/>
-        <attr name="distanceTextColor" format="color"/>
-        <attr name="distanceTextSize" format="dimension"/>
-        <attr name="showDistance" format="boolean"/>
-        <attr name="showDirectionsButton" format="boolean"/>
-        <attr name="showCallButton" format="boolean"/>
-        <attr name="showOpeningHours" format="boolean"/>
-        <attr name="showAddress" format="boolean"/>
-        <attr name="buttonTextColor" format="color"/>
+        <attr name="titleTextColor" format="color"/>
     </declare-styleable>
+
 </resources>

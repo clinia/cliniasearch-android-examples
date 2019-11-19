@@ -13,9 +13,12 @@ import com.clinia.widgets.R
 import com.clinia.widgets.data.HealthFacility
 import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.result_card_view.view.*
+import java.util.*
 
 class ResultAdapter(private val context: Context, private var data: MutableList<HealthFacility>) :
     RecyclerView.Adapter<ResultAdapter.ViewHolder>() {
+
+    var onLoadMoreListener: OnLoadMoreListener? = null
 
     class ViewHolder(val resultCard: MaterialCardView) : RecyclerView.ViewHolder(resultCard)
 
@@ -40,11 +43,12 @@ class ResultAdapter(private val context: Context, private var data: MutableList<
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-//        setAttributes(holder)
-
         holder.resultCard.type.text = data[position].type
         data[position].distance?.let {
-            holder.resultCard.distance.text = it.toString()
+            holder.resultCard.distance.text = Formatter().format(
+                context.resources.getString(R.string.record_distance),
+                it / 1000
+            ).toString()
             holder.resultCard.distance.visibility = View.VISIBLE
         }
         data[position].name?.let {
@@ -70,11 +74,14 @@ class ResultAdapter(private val context: Context, private var data: MutableList<
             if (data[position].phones.isNullOrEmpty()) View.GONE else View.VISIBLE
         holder.resultCard.directionsBtn.setOnClickListener {
             //maps intent using geopoint
-            data[position].geoPoint?.let {
-                val gmmIntentUri = Uri.parse("google.navigation:q=${it.lat}, ${it.lng}")
-                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-                mapIntent.setPackage("com.google.android.apps.maps")
-                context.startActivity(mapIntent)
+            data[position].geoPoint?.let { geo ->
+                data[position].address?.let { address ->
+                    val gmmIntentUri =
+                        Uri.parse("geo:${geo.lat}, ${geo.lng}?q=${address.streetAddress}, ${address.place}")
+                    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                    mapIntent.setPackage("com.google.android.apps.maps")
+                    context.startActivity(mapIntent)
+                }
             }
         }
         holder.resultCard.callBtn.visibility =
@@ -92,60 +99,7 @@ class ResultAdapter(private val context: Context, private var data: MutableList<
 
     override fun getItemCount() = data.size
 
-    private fun setAttributes(holder: ViewHolder, attrs: AttributeSet) {
-        context.obtainStyledAttributes(attrs, R.styleable.ResultsList).apply {
-            try {
-                holder.itemView.minimumHeight = getInt(R.styleable.ResultsList_minCardHeight, 0)
-
-                holder.resultCard.distance.visibility =
-                    if (getBoolean(R.styleable.ResultsList_showDistance, true))
-                        View.VISIBLE
-                    else
-                        View.GONE
-                holder.resultCard.directionsBtn.visibility =
-                    if (getBoolean(R.styleable.ResultsList_showDirectionsButton, true))
-                        View.VISIBLE
-                    else
-                        View.GONE
-                holder.resultCard.callBtn.visibility =
-                    if (getBoolean(R.styleable.ResultsList_showCallButton, true))
-                        View.VISIBLE
-                    else
-                        View.GONE
-                holder.resultCard.openingHours.visibility =
-                    if (getBoolean(R.styleable.ResultsList_showOpeningHours, true))
-                        View.VISIBLE
-                    else
-                        View.GONE
-                holder.resultCard.address.visibility =
-                    if (getBoolean(R.styleable.ResultsList_showAddress, true))
-                        View.VISIBLE
-                    else
-                        View.GONE
-                holder.resultCard.name.setTextColor(
-                    getColor(R.styleable.ResultsList_titleTextColor, Color.BLACK)
-                )
-                holder.resultCard.address.setTextColor(
-                    getColor(R.styleable.ResultsList_descriptionTextColor, Color.BLACK)
-                )
-                holder.resultCard.openingHours.setTextColor(
-                    getColor(R.styleable.ResultsList_descriptionTextColor, Color.BLACK)
-                )
-                holder.resultCard.type.setTextColor(
-                    getColor(R.styleable.ResultsList_typeTextColor, Color.BLACK)
-                )
-                holder.resultCard.distance.setTextColor(
-                    getColor(R.styleable.ResultsList_distanceTextColor, Color.BLACK)
-                )
-                holder.resultCard.directionsBtn.setTextColor(
-                    getColor(R.styleable.ResultsList_buttonTextColor, Color.BLACK)
-                )
-                holder.resultCard.callBtn.setTextColor(
-                    getColor(R.styleable.ResultsList_buttonTextColor, Color.BLACK)
-                )
-            } finally {
-                recycle()
-            }
-        }
+    interface OnLoadMoreListener {
+        fun onLoadMore()
     }
 }
