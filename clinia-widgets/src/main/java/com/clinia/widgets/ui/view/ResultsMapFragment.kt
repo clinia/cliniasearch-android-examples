@@ -24,6 +24,7 @@ class ResultsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
     private var adapter: ResultAdapter? = null
 
     private var map: GoogleMap? = null
+    private var previousMarker: Marker? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -79,9 +80,12 @@ class ResultsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
+        previousMarker?.setActive(false)
+        marker.setActive(true)
         resultsList.scrollToPosition(
             resultsList.getResult(marker.tag as String)
         )
+        previousMarker = marker
         return false
     }
 
@@ -94,3 +98,6 @@ class ResultsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
         fun newInstance() = ResultsMapFragment()
     }
 }
+
+fun Marker.setActive(isActive: Boolean) =
+    setIcon(BitmapDescriptorFactory.fromResource(if (isActive) R.drawable.ic_marker_active else R.drawable.ic_marker))
