@@ -14,14 +14,11 @@ import com.clinia.widgets.ui.main.MainViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.*
 import kotlinx.android.synthetic.main.results_map.*
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.Marker
 
 
-class ResultsMapFragment : Fragment(), OnMapReadyCallback {
+class ResultsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private lateinit var viewModel: MainViewModel
     private var adapter: ResultAdapter? = null
@@ -62,13 +59,14 @@ class ResultsMapFragment : Fragment(), OnMapReadyCallback {
                                 record.geoPoint.lng.toDouble()
                             )
                         )
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker))
+                        .alpha(1f)
                     map?.addMarker(markerOptions)
+                        ?.tag = record.id
                 }
             }
+            map?.setOnMarkerClickListener(this)
         })
-//        fab.setOnClickListener{
-////            resultsList.visibility = if (resultsList.isVisible) View.GONE else View.VISIBLE
-//        }
     }
 
     override fun onMapReady(p0: GoogleMap?) {
@@ -78,12 +76,12 @@ class ResultsMapFragment : Fragment(), OnMapReadyCallback {
 
         map?.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.mapstyle))
         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(45.530243, -73.565260), 13f))
-
-        //TODO: add markers
     }
 
-    fun onMarkerClick(marker: Marker): Boolean {
-        //TODO: scroll list on marker click
+    override fun onMarkerClick(marker: Marker): Boolean {
+        resultsList.scrollToPosition(
+            resultsList.getResult(marker.tag as String)
+        )
         return false
     }
 

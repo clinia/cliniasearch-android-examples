@@ -27,7 +27,11 @@ class ResultAdapter(private val context: Context, private var data: MutableList<
         notifyDataSetChanged()
     }
 
-    fun getIndex(records: HealthFacility) = data.indexOf(records)
+    fun getIndex(id: String): Int {
+        return data.indexOf(data.find {
+            it.id == id
+        })
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

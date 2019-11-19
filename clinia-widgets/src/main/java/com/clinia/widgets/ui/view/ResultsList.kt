@@ -8,5 +8,5 @@ class ResultsList @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : RecyclerView(context, attrs, defStyleAttr) {
 
-
+    fun getResult(id: String) = (adapter as ResultAdapter).getIndex(id)
 }
