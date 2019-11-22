@@ -84,13 +84,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun loadMore(): LiveData<SearchResponse> {
         var currentPage: Int? = null
         searchData.value?.meta?.page?.let { page ->
-             currentPage = page
+             currentPage = page + 1
         }
         return dataRepository.searchHealthFacilities(
             SingleIndexSearchRequest(
                 query = query,
                 location = locationQuery,
-                page = currentPage ?: 1
+                page = currentPage ?: 0
             )
         )
     }
