@@ -10,6 +10,10 @@ const val application = "TODO"
 const val apiKey = "AAW3nfvI79tj4LzECYZSEbDP7lqBpFd5"
 const val contentType = "application/json"
 
+/**
+ * The NetworkManager Object contains the three services exposed by the Clinia API for use by the
+ * Vision library.
+ */
 object NetworkManager{
 
     private const val prefixURL = "https://api.partner.staging.clinia.ca/"

@@ -59,8 +59,17 @@ class AutoCompleteAdapter(
         }
     }
 
+    /**
+     *
+     *@return The size of the data MutableList.
+     */
     override fun getItemCount() = data.size
 
+    /**
+     * This method sets the items to display in the adapter.
+     *
+     * @param items
+     */
     fun setAutoCompleteItems(items: List<Any>) {
         data.clear()
         data.addAll(items)
