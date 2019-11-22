@@ -10,6 +10,17 @@ import com.clinia.widgets.R
 import com.clinia.widgets.data.QuerySuggestion
 import kotlinx.android.synthetic.main.view_autocomplete.view.*
 
+/**
+ * The AutoComplete Widget to be used with the CliniaViewmodel to display query and location
+ * suggestions to the user.
+ *
+ * @constructor
+ * The Autocomplete widget constructor inherits every default value from the LinearLayout constructor.
+ *
+ * @param context
+ * @param attrs
+ * @param defStyleAttr
+ */
 class AutoComplete @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
@@ -45,10 +56,19 @@ class AutoComplete @JvmOverloads constructor(
         autoCompleteList.layoutManager = LinearLayoutManager(context)
     }
 
+    /**
+     * This method sets the items to display in the adapter.
+     *
+     * @param items
+     */
     fun setAutoCompleteItems(items: List<Any>) {
         adapter.setAutoCompleteItems(items)
     }
 
+    /**
+     * Implement this interface to intercept click events on the AutoComplete items
+     *
+     */
     interface AutoCompleteListener {
         fun onAutoCompleteItemClicked(suggestion: Any)
     }

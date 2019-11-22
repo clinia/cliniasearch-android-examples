@@ -9,7 +9,14 @@ import com.clinia.widgets.R
 import com.clinia.widgets.data.PlaceSuggestion
 import com.clinia.widgets.data.QuerySuggestion
 
-
+/**
+ * The AutoCompleteAdapter is intended for use with the AutoComplete widget.
+ * It is a custom class extending a RecyclerView  Adapter with a generic ViewHolder accepting both
+ * QuerySuggestion and PlaceSuggestion objects.
+ *
+ * @property data       MutableList<Any> containing the items to be displayed in the adapter
+ * @property onClick    (Any) -> Unit Method to be called when an item is clicked.
+ */
 class AutoCompleteAdapter(
     private val data: MutableList<Any>, val onClick: (Any) -> Unit
 ) :
