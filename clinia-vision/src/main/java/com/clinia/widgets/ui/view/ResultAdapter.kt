@@ -15,27 +15,51 @@ import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.result_card_view.view.*
 import java.util.*
 
+/**
+ * The ResultAdapter class in intended for use with the ResultsList widget to display search results
+ * to the user and allow user interaction.
+ *
+ * @property context Your activity context
+ * @property data MutableList<HealthFacility> containing the search results to be displayed
+ * @property onClick ((HealthFacility) -> Unit) Method to be called when the user clicks a result card.
+ */
 class ResultAdapter(
     private val context: Context,
     private var data: MutableList<HealthFacility>,
-    val onClick: ((HealthFacility) -> Unit)? = null
+    private val onClick: ((HealthFacility) -> Unit)? = null
 ) :
     RecyclerView.Adapter<ResultAdapter.ViewHolder>() {
 
 
     inner class ViewHolder(val resultCard: MaterialCardView) : RecyclerView.ViewHolder(resultCard)
 
+    /**
+     * Replace the currently displayed results by the ones passed in parameters.
+     *
+     * @param mutableList
+     */
     fun setData(mutableList: MutableList<HealthFacility>) {
         data = mutableList
         notifyDataSetChanged()
     }
 
+    /**
+     * Add the data passed in parameter to the data currently displayed.
+     *
+     * @param mutableList
+     */
     fun addData(mutableList: MutableList<HealthFacility>) {
         val start = data.size
         data.addAll(mutableList)
         notifyItemRangeInserted(start, data.size)
     }
 
+    /**
+     * Return the index of a given Result based on its ID
+     *
+     * @param id The id of the HealthFacility
+     * @return The HealthFacility's current index in the adapter's data.
+     */
     fun getIndex(id: String): Int {
         return data.indexOf(data.find {
             it.id == id

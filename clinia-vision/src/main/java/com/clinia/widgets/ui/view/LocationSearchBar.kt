@@ -9,10 +9,17 @@ import android.widget.LinearLayout
 import com.clinia.widgets.R
 import kotlinx.android.synthetic.main.view_location_search.view.*
 
-//class SearchBar @JvmOverloads constructor(
-//    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-//) : LinearLayout(context, attrs, defStyleAttr) {
-
+/**
+ * The LocationSearchBar is a widget intended to be used with the CliniaViewModel
+ * to get a location input from the user.
+ *
+ * @constructor
+ * The LocationSearchBar inherits the base constructors from the LinearLayout Class
+ *
+ * @param context
+ * @param attrs
+ * @param defStyleAttr
+ */
 class LocationSearchBar @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
@@ -57,10 +64,24 @@ class LocationSearchBar @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Sets the text displayed in the search bar
+     *
+     * @param location Text to be displayed
+     */
     fun setLocation(location: String) {
         locationEditText.setText(location)
     }
 
+    /**
+     * Implement this interface to access various callbacks from the search bar for user interaction
+     *
+     * onLocationSearchBarFocusChanged(hasFocus: Boolean) is called every time the search bar gets or loses focus.
+     * onLocationSearchBarEnter(location: String) is called when the user presses the enter key.
+     * onLocationSearchBarTextChange(location: String) is called every time the user modifies the text.
+     * onLocationSearchBarCleared() is called when the user presses the clear button.
+     *
+     */
     interface LocationSearchBarListener {
         fun onLocationSearchBarFocusChanged(hasFocus: Boolean)
         fun onLocationSearchBarEnter(location: String)

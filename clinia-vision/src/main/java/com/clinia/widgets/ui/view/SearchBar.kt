@@ -9,6 +9,17 @@ import android.widget.LinearLayout
 import com.clinia.widgets.R
 import kotlinx.android.synthetic.main.view_search.view.*
 
+/**
+ * The SearchBar is a widget intended to be used with the CliniaViewModel
+ * to get a query input from the user.
+ *
+ * @constructor
+ * The SearchBar inherits the base constructors from the LinearLayout Class
+ *
+ * @param context
+ * @param attrs
+ * @param defStyleAttr
+ */
 class SearchBar @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
@@ -54,10 +65,24 @@ class SearchBar @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Sets the text displayed in the search bar
+     *
+     * @param query Text to be displayed
+     */
     fun setQuery(query: String) {
         searchEditText.setText(query)
     }
 
+    /**
+     * Implement this interface to access various callbacks from the search bar for user interaction
+     *
+     * onSearchBarFocusChanged(hasFocus: Boolean) is called every time the search bar gets or loses focus.
+     * onSearchBarEnter(query: String) is called when the user presses the enter key.
+     * onSearchBarTextChange(query: String) is called every time the user modifies the text.
+     * onSearchBarCleared() is called when the user presses the clear button.
+     *
+     */
     interface SearchBarListener {
         fun onSearchBarFocusChanged(hasFocus: Boolean)
         fun onSearchBarEnter(query: String)

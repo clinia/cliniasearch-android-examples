@@ -17,7 +17,11 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.*
 import kotlinx.android.synthetic.main.results_map.*
 
-
+/**
+ * The ResultsMapFragment can be used with the CliniaViewModel and ResultsAdapter classes to display
+ * the search results on a custom styled map with a ResultsList featured at the bottom.
+ *
+ */
 class ResultsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private lateinit var viewModel: CliniaViewModel
     private var adapter: ResultAdapter? = null
