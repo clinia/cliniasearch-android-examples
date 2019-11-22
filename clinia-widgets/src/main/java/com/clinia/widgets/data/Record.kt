@@ -71,14 +71,6 @@ data class HealthFacility(
                 return hour
         return null
     }
-
-    val isOpen = true
-
-    private fun isOpen(current: Date, startTime: String, endTime:String): Boolean {
-
-        return true
-//        return false
-    }
     /*
     Closed now
     Open 24h today
@@ -90,7 +82,7 @@ data class HealthFacility(
         getHours()?.let {
             if (it.isEmpty()) return "Closed now"
             else if (it[0].start == "00:00" && it[0].end == "00:00") return "Open 24h today"
-            else if (isOpen) {
+            else if (getCurrentInterval(it) != null) {
                 if (it.size > 1) {
                     getCurrentInterval(it)?.let { hours ->
                         return ("Open now. ${hours.start}-${hours.end}")
