@@ -22,13 +22,18 @@ class ResultAdapter(
 ) :
     RecyclerView.Adapter<ResultAdapter.ViewHolder>() {
 
-    var onLoadMoreListener: OnLoadMoreListener? = null
 
     inner class ViewHolder(val resultCard: MaterialCardView) : RecyclerView.ViewHolder(resultCard)
 
     fun setData(mutableList: MutableList<HealthFacility>) {
         data = mutableList
         notifyDataSetChanged()
+    }
+
+    fun addData(mutableList: MutableList<HealthFacility>) {
+        val start = data.size
+        data.addAll(mutableList)
+        notifyItemRangeInserted(start, data.size)
     }
 
     fun getIndex(id: String): Int {
@@ -110,7 +115,4 @@ class ResultAdapter(
 
     override fun getItemCount() = data.size
 
-    interface OnLoadMoreListener {
-        fun onLoadMore()
-    }
 }
