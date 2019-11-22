@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.clinia.widgets.R
 import com.clinia.widgets.data.HealthFacility
-import com.clinia.widgets.ui.main.MainViewModel
+import com.clinia.widgets.ui.main.CliniaViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -23,7 +23,7 @@ import com.google.android.gms.maps.model.Marker
 
 class ResultsMapFragment : Fragment(), OnMapReadyCallback {
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: CliniaViewModel
     private var adapter: ResultAdapter? = null
 
     private var map: GoogleMap? = null
@@ -39,7 +39,7 @@ class ResultsMapFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.let {
-            viewModel = ViewModelProviders.of(it).get(MainViewModel::class.java)
+            viewModel = ViewModelProviders.of(it).get(CliniaViewModel::class.java)
         }
         context?.let {
             adapter = ResultAdapter(it, mutableListOf())
