@@ -18,8 +18,6 @@ import java.util.*
 class ResultAdapter(private val context: Context, private var data: MutableList<HealthFacility>) :
     RecyclerView.Adapter<ResultAdapter.ViewHolder>() {
 
-    var onLoadMoreListener: OnLoadMoreListener? = null
-
     class ViewHolder(val resultCard: MaterialCardView) : RecyclerView.ViewHolder(resultCard)
 
     fun setData(mutableList: MutableList<HealthFacility>) {
@@ -99,7 +97,4 @@ class ResultAdapter(private val context: Context, private var data: MutableList<
 
     override fun getItemCount() = data.size
 
-    interface OnLoadMoreListener {
-        fun onLoadMore()
-    }
 }

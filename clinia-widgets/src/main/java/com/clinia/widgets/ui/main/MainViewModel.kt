@@ -20,6 +20,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     var query: String = ""
     var locationQuery: String = ""
+    private var lastLocation: Location? = null
 
     private var searchData = MutableLiveData<SearchResponse>()
     private var searchMetadata = MutableLiveData<Metadata>()
@@ -27,6 +28,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private var placeSuggestions = MutableLiveData<List<PlaceSuggestion>>()
 
     init {
+        LocationServices.getFusedLocationProviderClient(application.baseContext)
+            .lastLocation.addOnSuccessListener {
+            lastLocation = it
+        }
         search()
     }
 
@@ -37,7 +42,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     //call this method to access the data
     fun getSearchData(): LiveData<SearchResponse> {
-        search()
+        search(query = query, location = lastLocation)
         return searchData
     }
 
@@ -59,26 +64,40 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun search(query: String?, location: Location?) {
-        val search = SingleIndexSearchRequest(query)
-//        location?.let {
-//            search.filters = Filters("${it.latitude}, ${it.longitude}")
-//        }
+        val search: SingleIndexSearchRequest = if (location != null) {
+            SingleIndexSearchRequest(
+                query = query,
+                location = "${location.latitude}, ${location.longitude}"
+            )
+        } else {
+            SingleIndexSearchRequest(query = query, location = locationQuery)
+        }
         loadData(search)
     }
 
     private fun search(query: String?, location: String?) {
-        val search = SingleIndexSearchRequest(query = query, location = location)
-//        location?.let {
-//            if (it.isBlank() or it.isEmpty()) {
-//                locationQuery = it
-//                //TODO: change to coordinates when backend supports it
-////            search(query, lastLocation)
-//                search.filters = Filters(it)
-//            } else {
-//                search.filters = Filters(it)
-//            }
-//        }
-        loadData(search)
+        location?.let {
+            if (it.isBlank() or it.isEmpty()) {
+                search(query = query, location = lastLocation)
+            } else {
+                loadData(SingleIndexSearchRequest(query = query, location = location))
+            }
+        }
+    }
+
+    fun loadMore() {
+        searchData.value?.meta?.page?.let { page ->
+            val newSearchData = dataRepository.searchHealthFacilities(
+                SingleIndexSearchRequest(
+                    query = query,
+                    location = locationQuery,
+                    page = page + 1
+                )
+            )
+            newSearchData.value?.records?.let { records ->
+                searchData.value?.records?.addAll(records)
+            }
+        }
     }
 
     private fun loadData(search: SingleIndexSearchRequest) {

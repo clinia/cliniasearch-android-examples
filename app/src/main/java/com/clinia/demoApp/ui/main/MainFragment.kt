@@ -13,14 +13,12 @@ import com.clinia.widgets.data.HealthFacility
 import com.clinia.widgets.data.PlaceSuggestion
 import com.clinia.widgets.data.QuerySuggestion
 import com.clinia.widgets.ui.main.MainViewModel
-import com.clinia.widgets.ui.view.AutoComplete
-import com.clinia.widgets.ui.view.LocationSearchBar
-import com.clinia.widgets.ui.view.ResultAdapter
-import com.clinia.widgets.ui.view.SearchBar
+import com.clinia.widgets.ui.view.*
 import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : Fragment(), SearchBar.SearchBarListener,
-    LocationSearchBar.LocationSearchBarListener, AutoComplete.AutoCompleteListener {
+    LocationSearchBar.LocationSearchBarListener, AutoComplete.AutoCompleteListener,
+    ResultsList.OnLoadMoreListener {
 
     private lateinit var viewModel: MainViewModel
 
@@ -42,6 +40,7 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener,
             resultsList.adapter = adapter
             resultsList.layoutManager = LinearLayoutManager(activity)
         }
+        resultsList.listener = this
         activity?.let {
             viewModel = ViewModelProviders.of(it).get(MainViewModel::class.java)
             viewModel.getSearchData().observe(this, Observer { searchResponse ->
@@ -99,7 +98,7 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener,
 
     override fun onAutoCompleteItemClicked(suggestion: Any) {
         if (suggestion is QuerySuggestion) {
-            suggestion.suggestion?.let {it ->
+            suggestion.suggestion?.let { it ->
                 viewModel.query = it
                 searchBar.setQuery(it)
                 searchBar.clearFocus()
@@ -116,7 +115,15 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener,
         })
     }
 
+    override fun onLoadMore() {
+        viewModel.loadMore()
+        viewModel.getSearchData().observe(this, Observer {
+            adapter?.setData(it.records as MutableList<HealthFacility>)
+        })
+    }
+
     companion object {
         fun newInstance() = MainFragment()
     }
+
 }
