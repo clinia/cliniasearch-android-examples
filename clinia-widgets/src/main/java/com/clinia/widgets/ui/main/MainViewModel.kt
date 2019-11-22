@@ -3,11 +3,7 @@ package com.clinia.widgets.ui.main
 import android.app.Application
 import android.location.Location
 import androidx.lifecycle.*
-import com.clinia.widgets.data.Metadata
-import com.clinia.widgets.data.PlaceSuggestion
-import com.clinia.widgets.data.QuerySuggestion
-import com.clinia.widgets.data.SearchResponse
-import com.clinia.widgets.data.SearchDataRepository
+import com.clinia.widgets.data.*
 import com.clinia.widgets.data.network.PlaceSuggestionRequest
 import com.clinia.widgets.data.network.QuerySuggestionRequest
 import com.clinia.widgets.data.network.SingleIndexSearchRequest
@@ -85,19 +81,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun loadMore() {
+    fun loadMore(): LiveData<SearchResponse> {
+        var currentPage: Int? = null
         searchData.value?.meta?.page?.let { page ->
-            val newSearchData = dataRepository.searchHealthFacilities(
-                SingleIndexSearchRequest(
-                    query = query,
-                    location = locationQuery,
-                    page = page + 1
-                )
-            )
-            newSearchData.value?.records?.let { records ->
-                searchData.value?.records?.addAll(records)
-            }
+             currentPage = page
         }
+        return dataRepository.searchHealthFacilities(
+            SingleIndexSearchRequest(
+                query = query,
+                location = locationQuery,
+                page = currentPage ?: 1
+            )
+        )
     }
 
     private fun loadData(search: SingleIndexSearchRequest) {

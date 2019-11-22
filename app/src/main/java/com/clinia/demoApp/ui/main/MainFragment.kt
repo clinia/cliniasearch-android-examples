@@ -116,9 +116,8 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener,
     }
 
     override fun onLoadMore() {
-        viewModel.loadMore()
-        viewModel.getSearchData().observe(this, Observer {
-            adapter?.setData(it.records as MutableList<HealthFacility>)
+        viewModel.loadMore().observe(this, Observer {
+            adapter?.addData(it.records as MutableList<HealthFacility>)
         })
     }
 

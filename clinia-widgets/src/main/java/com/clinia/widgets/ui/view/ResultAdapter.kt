@@ -25,6 +25,10 @@ class ResultAdapter(private val context: Context, private var data: MutableList<
         notifyDataSetChanged()
     }
 
+    fun addData(mutableList: MutableList<HealthFacility>) {
+        data.addAll(mutableList)
+    }
+
     fun getIndex(records: HealthFacility) = data.indexOf(records)
 
     override fun onCreateViewHolder(
