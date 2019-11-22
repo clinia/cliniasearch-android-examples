@@ -16,24 +16,24 @@ interface SearchService {
     fun searchHealthFacilities(
             @Body body: SingleIndexSearchRequest,
             @Header("Content-Type") auth: String = contentType,
-            @Query("x-clinia-application-id") api: String = application,
-            @Query("x-clinia-api-key") key: String = apiKey
+            @Query("x-clinia-application-id") api: String = NetworkManager.application,
+            @Query("x-clinia-api-key") key: String = NetworkManager.apiKey
     ): Call<SearchResponse>
 
     @POST("search/v1/indexes/professional/query?")
     fun searchProfessionnals(
             @Body body: SingleIndexSearchRequest,
             @Header("Content-Type") auth: String = contentType,
-            @Query("x-clinia-application-id") api: String = application,
-            @Query("x-clinia-api-key") key: String = apiKey
+            @Query("x-clinia-application-id") api: String = NetworkManager.application,
+            @Query("x-clinia-api-key") key: String = NetworkManager.apiKey
     ): Call<SearchResponse>
 
     @POST("search/v1/indexes/*/queries?")
     fun search(
             @Body body: MultiIndexesSearchRequest,
             @Header("Content-Type") auth: String = contentType,
-            @Query("x-clinia-application-id") api: String = application,
-            @Query("x-clinia-api-key") key: String = apiKey
+            @Query("x-clinia-application-id") api: String = NetworkManager.application,
+            @Query("x-clinia-api-key") key: String = NetworkManager.apiKey
     ): Call<MultiSearchResponse>
 }
 

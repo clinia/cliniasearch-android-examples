@@ -7,7 +7,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SearchDataRepository {
+class SearchDataRepository(endPoint: String, appId: String, apiKey: String) {
+
+    init {
+        NetworkManager.prefixURL = endPoint
+        NetworkManager.application = appId
+        NetworkManager.apiKey = apiKey
+    }
 
     fun searchHealthFacilities(request: SingleIndexSearchRequest): MutableLiveData<SearchResponse> {
         val data = MutableLiveData<SearchResponse>()

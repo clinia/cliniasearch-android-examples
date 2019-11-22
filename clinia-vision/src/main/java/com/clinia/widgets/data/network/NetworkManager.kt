@@ -6,8 +6,6 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-const val application = "TODO"
-const val apiKey = "AAW3nfvI79tj4LzECYZSEbDP7lqBpFd5"
 const val contentType = "application/json"
 
 /**
@@ -16,7 +14,9 @@ const val contentType = "application/json"
  */
 object NetworkManager{
 
-    private const val prefixURL = "https://api.partner.staging.clinia.ca/"
+    lateinit var application: String
+    lateinit var apiKey: String
+    lateinit var prefixURL: String
 
     private var moshi = Moshi.Builder()
             .add(QuerySuggestionAdapter())

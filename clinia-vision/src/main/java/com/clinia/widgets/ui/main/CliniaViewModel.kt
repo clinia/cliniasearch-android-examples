@@ -19,7 +19,7 @@ import com.google.android.gms.location.LocationServices
  */
 class CliniaViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val dataRepository: SearchDataRepository = SearchDataRepository()
+    private lateinit var dataRepository: SearchDataRepository
 
     var query: String = ""
     var locationQuery: String = ""
@@ -36,6 +36,10 @@ class CliniaViewModel(application: Application) : AndroidViewModel(application) 
             lastLocation = it
         }
         search()
+    }
+
+    fun setEnvironment(application: String, apiKey: String, endpoint: String) {
+        dataRepository = SearchDataRepository(application, apiKey, endpoint)
     }
 
     /**

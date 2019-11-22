@@ -17,8 +17,8 @@ interface PlaceSuggestionService {
             @Query("types") place: String = "place",
             @Query("types") postCode: String = "postcode",
             @Query("types") neighborHood: String = "neighborhood",
-            @Query("x-clinia-application-id") api: String = application,
-            @Query("x-clinia-api-key") key: String = apiKey,
+            @Query("x-clinia-application-id") api: String = NetworkManager.application,
+            @Query("x-clinia-api-key") key: String = NetworkManager.apiKey,
             @Header("Content-Type") auth: String = contentType
     ): Call<List<PlaceSuggestion>>
 }

@@ -15,8 +15,8 @@ interface QuerySuggestionService {
     fun suggest(
             @Body body: QuerySuggestionRequest,
             @Header("Content-Type") auth: String = contentType,
-            @Query("x-clinia-application-id") api: String = application,
-            @Query("x-clinia-api-key") key: String = apiKey
+            @Query("x-clinia-application-id") api: String = NetworkManager.application,
+            @Query("x-clinia-api-key") key: String = NetworkManager.apiKey
     ): Call<List<QuerySuggestion>>
 }
 
