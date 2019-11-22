@@ -38,7 +38,7 @@ buildscript {
                 retrofit        : '2.6.2',
                 moshi           : '1.8.0',
                 playServices    : '17.0.0',
-                javadoc         : '0.3.0',
+                dokka           : '0.10.0',
                 nexus           : '0.5.3',
                 pegdown         : '1.3'
         ]
@@ -47,24 +47,18 @@ buildscript {
     repositories {
         google()
         jcenter()
-        mavenCentral()
     }
 
     dependencies {
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+        classpath "com.android.tools.build:gradle:${versions.gradle}"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${versions.dokka}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+
         classpath "ch.raffael.pegdown-doclet:pegdown-doclet:${versions.pegdown}"
         classpath "com.android.tools.build:gradle:${versions.gradle}"
         classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:${versions.nexus}"
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
-
-    dependencies {
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-        classpath "com.android.tools.build:gradle:${versions.gradle}"
-        classpath "com.vanniktech:gradle-android-javadoc-plugin:${versions.javadoc}"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
     }
 }
 
@@ -75,11 +69,18 @@ allprojects {
     }
 }
 
+subprojects {
+    if (name.startsWith('clinia-vision')) {
+        apply plugin: 'org.jetbrains.dokka'
+    }
+}
+
+
+
 ext {
     PUBLISH_GROUP_ID = 'ca.clinia'
 }
 
-apply plugin: 'com.vanniktech.android.javadoc'
 apply plugin: 'io.codearte.nexus-staging'
 
 nexusStaging {
