@@ -14,6 +14,14 @@ import com.clinia.widgets.data.network.SingleIndexSearchRequest
 
 import com.google.android.gms.location.LocationServices
 
+/**
+ * The CliniaViewModel class is used to access the various methods calling the Clina API
+ *
+ * @constructor
+ * The constructor takes as parameter an Application object
+ *
+ * @param application
+ */
 class CliniaViewModel(application: Application) : AndroidViewModel(application) {
 
     private val dataRepository: SearchDataRepository = SearchDataRepository()

@@ -38,16 +38,19 @@ class MainActivity : AppCompatActivity() {
         fab.setOnClickListener {f ->
             supportFragmentManager.findFragmentById(R.id.container)?.let {
                 if (it.isVisible && it is ResultsMapFragment) {
-                    f.animate().translationY(0f)
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.container, MainFragment.newInstance())
                         .commit()
+                    f.animate().translationY(0f)
+                    fab.setImageResource(R.drawable.ic_map)
                 }
                 else {
-                    f.animate().translationY(-520f)
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.container, ResultsMapFragment.newInstance())
                         .commit()
+                    f.animate().translationY(-520f)
+                    fab.setImageResource(R.drawable.ic_list)
+
                 }
             }
         }

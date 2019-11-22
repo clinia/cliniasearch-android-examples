@@ -14,19 +14,17 @@ import com.clinia.widgets.ui.main.CliniaViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.*
 import kotlinx.android.synthetic.main.results_map.*
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.Marker
 
 
-class ResultsMapFragment : Fragment(), OnMapReadyCallback {
-
+class ResultsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private lateinit var viewModel: CliniaViewModel
     private var adapter: ResultAdapter? = null
 
     private var map: GoogleMap? = null
+    private var previousMarker: Marker? = null
+    private var bounds: LatLngBounds? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,8 +39,8 @@ class ResultsMapFragment : Fragment(), OnMapReadyCallback {
         activity?.let {
             viewModel = ViewModelProviders.of(it).get(CliniaViewModel::class.java)
         }
-        context?.let {
-            adapter = ResultAdapter(it, mutableListOf())
+        context?.let { context ->
+            adapter = ResultAdapter(context, mutableListOf()) { moveMapTo(it) }
             resultsList.adapter = adapter
             resultsList.layoutManager =
                 LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
@@ -52,23 +50,30 @@ class ResultsMapFragment : Fragment(), OnMapReadyCallback {
 
         viewModel.getSearchData().observe(this, Observer {
             adapter?.setData(it.records as MutableList<HealthFacility>)
-            // Creating a marker
+
+            //calculate zoom to show all markers at once
+            val builder = LatLngBounds.Builder()
+            // Creating markers
             for (record in it.records as MutableList<HealthFacility>) {
-                record.geoPoint?.let {
+                record.geoPoint?.let { geo ->
                     val markerOptions = MarkerOptions()
                         .position(
                             LatLng(
-                                record.geoPoint.lat.toDouble(),
-                                record.geoPoint.lng.toDouble()
+                                geo.lat.toDouble(),
+                                geo.lng.toDouble()
                             )
                         )
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker))
+                        .alpha(1f)
                     map?.addMarker(markerOptions)
+                        ?.tag = record.id
+                    builder.include(markerOptions.position)
                 }
             }
+            map?.setOnMarkerClickListener(this)
+            bounds = builder.build()
+            map?.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0))
         })
-//        fab.setOnClickListener{
-////            resultsList.visibility = if (resultsList.isVisible) View.GONE else View.VISIBLE
-//        }
     }
 
     override fun onMapReady(p0: GoogleMap?) {
@@ -77,14 +82,31 @@ class ResultsMapFragment : Fragment(), OnMapReadyCallback {
         map?.isMyLocationEnabled = true
 
         map?.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.mapstyle))
-        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(45.530243, -73.565260), 13f))
 
-        //TODO: add markers
+        //zoom to show all markers
     }
 
-    fun onMarkerClick(marker: Marker): Boolean {
-        //TODO: scroll list on marker click
+    override fun onMarkerClick(marker: Marker): Boolean {
+        previousMarker?.setActive(false)
+        marker.setActive(true)
+        resultsList.scrollToPosition(
+            resultsList.getResult(marker.tag as String)
+        )
+        previousMarker = marker
         return false
+    }
+
+    private fun moveMapTo(healthFacility: HealthFacility) {
+        healthFacility.geoPoint?.let {
+            map?.moveCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    LatLng(
+                        it.lat.toDouble(),
+                        it.lng.toDouble()
+                    ), 13f
+                )
+            )
+        }
     }
 
     override fun onResume() {
@@ -96,3 +118,6 @@ class ResultsMapFragment : Fragment(), OnMapReadyCallback {
         fun newInstance() = ResultsMapFragment()
     }
 }
+
+fun Marker.setActive(isActive: Boolean) =
+    setIcon(BitmapDescriptorFactory.fromResource(if (isActive) R.drawable.ic_marker_active else R.drawable.ic_marker))
