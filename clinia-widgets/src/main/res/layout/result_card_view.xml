@@ -5,6 +5,8 @@
     style="@style/Widget.MaterialComponents.CardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:minWidth="240dp"
+    android:maxWidth="280dp"
     app:cardCornerRadius="@dimen/default_corner_radius"
     android:layout_margin="@dimen/spacing_small"
     android:layout_marginTop="@dimen/spacing_small">
@@ -42,6 +44,8 @@
             style="@style/TextResultTitle"
             android:layout_marginTop="@dimen/spacing_small"
             android:layout_marginBottom="@dimen/spacing_small"
+            android:ellipsize="end"
+            android:maxLines="2"
             app:layout_constraintTop_toBottomOf="@id/type"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="Dermatology clinic ABC" />
