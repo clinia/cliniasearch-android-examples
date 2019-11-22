@@ -25,4 +25,6 @@ class ResultsList @JvmOverloads constructor(
     interface OnLoadMoreListener {
         fun onLoadMore()
     }
+
+    fun getResult(id: String) = (adapter as ResultAdapter).getIndex(id)
 }
