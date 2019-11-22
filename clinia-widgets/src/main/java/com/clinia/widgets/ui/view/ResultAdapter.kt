@@ -26,7 +26,9 @@ class ResultAdapter(private val context: Context, private var data: MutableList<
     }
 
     fun addData(mutableList: MutableList<HealthFacility>) {
+        val start = data.size
         data.addAll(mutableList)
+        notifyItemRangeInserted(start, data.size)
     }
 
     fun getIndex(records: HealthFacility) = data.indexOf(records)
