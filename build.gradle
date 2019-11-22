@@ -69,19 +69,12 @@ allprojects {
     }
 }
 
-subprojects {
-    if (name.startsWith('clinia-vision')) {
-        apply plugin: 'org.jetbrains.dokka'
-    }
-}
-
-
-
 ext {
     PUBLISH_GROUP_ID = 'ca.clinia'
 }
 
 apply plugin: 'io.codearte.nexus-staging'
+apply plugin: 'org.jetbrains.dokka'
 
 nexusStaging {
     packageGroup = PUBLISH_GROUP_ID
@@ -90,4 +83,25 @@ nexusStaging {
     stagingProfileId = ''
     numberOfRetries = 3
     delayBetweenRetriesInMillis = 3000
+}
+
+dokka {
+    outputFormat = 'gfm'
+    outputDirectory = "$buildDir/javadoc"
+
+    subProjects = ['clinia-vision']
+
+    configuration {
+        includeNonPublic = false
+        skipDeprecated = false
+
+        reportUndocumented = true
+        skipEmptyPackages = true
+
+        targets = ["JVM"]
+        platform = "JVM"
+
+//        includes = ['packages.md', 'extra.md']
+//        samples = ['samples/basic.kt', 'samples/advanced.kt']
+    }
 }
