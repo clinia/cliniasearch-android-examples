@@ -7,7 +7,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 const val application = "TODO"
-const val apiKey = "ClM5vDTmS4GWEL0aS7osJaRkowV8McuP"
+const val apiKey = "AAW3nfvI79tj4LzECYZSEbDP7lqBpFd5"
 const val contentType = "application/json"
 
 object NetworkManager{
