@@ -27,6 +27,7 @@ class ResultAdapter(
     private val context: Context,
     private var data: MutableList<HealthFacility>,
     private val onClick: ((HealthFacility) -> Unit)? = null
+
 ) :
     RecyclerView.Adapter<ResultAdapter.ViewHolder>() {
 
