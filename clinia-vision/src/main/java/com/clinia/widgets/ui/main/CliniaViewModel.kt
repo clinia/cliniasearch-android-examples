@@ -46,7 +46,6 @@ class CliniaViewModel(application: Application) : AndroidViewModel(application) 
      */
     fun setEnvironment(application: String, apiKey: String, endpoint: String) {
         dataRepository = SearchDataRepository(application, apiKey, endpoint)
-        search()
     }
 
     /**
