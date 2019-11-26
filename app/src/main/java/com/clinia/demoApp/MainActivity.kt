@@ -8,6 +8,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import com.clinia.demoApp.ui.main.MainFragment
+import com.clinia.widgets.BuildConfig
 import com.clinia.widgets.R
 import com.clinia.widgets.ui.main.CliniaViewModel
 import com.clinia.widgets.ui.view.ResultsMapFragment
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel = ViewModelProviders.of(this).get(CliniaViewModel::class.java)
-//        viewModel.setEnvironment(getString(R.string.application), getString(R.string.apiKey), getString(R.string.endpoint))
+        viewModel.setEnvironment(BuildConfig.application, BuildConfig.apiKey, BuildConfig.endpoint)
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED) {

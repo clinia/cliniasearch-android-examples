@@ -35,11 +35,11 @@ class CliniaViewModel(application: Application) : AndroidViewModel(application) 
             .lastLocation.addOnSuccessListener {
             lastLocation = it
         }
-        search()
     }
 
     fun setEnvironment(application: String, apiKey: String, endpoint: String) {
         dataRepository = SearchDataRepository(application, apiKey, endpoint)
+        search()
     }
 
     /**
