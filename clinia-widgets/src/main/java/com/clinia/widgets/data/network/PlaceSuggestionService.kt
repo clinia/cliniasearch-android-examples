@@ -10,9 +10,7 @@ interface PlaceSuggestionService {
             @Query("input") input: String?,
             @Query("country") country: String?,
             @Query("limit") limit: Int?,
-            @Query("types") place: String = "place",
-            @Query("types") postCode: String = "postcode",
-            @Query("types") neighborHood: String = "neighborhood",
+            @Query("types") types: List<String>?,
             @Query("x-clinia-application-id") api: String = application,
             @Query("x-clinia-api-key") key: String = apiKey,
             @Header("Content-Type") auth: String = contentType
@@ -22,5 +20,6 @@ interface PlaceSuggestionService {
 data class PlaceSuggestionRequest(
     val input: String = "",
     val country: String? = null,
-    val size: Int = 5
+    val types: List<String>? = listOf("postcode", "place", "neighborhood"),
+    val size: Int? = 5
 )

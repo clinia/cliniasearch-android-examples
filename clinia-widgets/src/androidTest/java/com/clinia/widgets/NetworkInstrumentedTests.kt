@@ -106,13 +106,13 @@ class NetworkInstrumentedTests {
     @Test
     fun querySuggestions() {
         val signal = CountDownLatch(1)
-        NetworkManager.querySuggestionService.suggest(QuerySuggestionRequest("", "<strong>", "</strong>", 5)).enqueue(object : Callback<Array<QuerySuggestion>> {
-            override fun onFailure(call: Call<Array<QuerySuggestion>>?, t: Throwable?) {
+        NetworkManager.querySuggestionService.suggest(QuerySuggestionRequest("", "<strong>", "</strong>", 5)).enqueue(object : Callback<List<QuerySuggestion>> {
+            override fun onFailure(call: Call<List<QuerySuggestion>>?, t: Throwable?) {
                 t?.let { fail("onFailure message: ${t.message}") }
                 signal.countDown()
             }
 
-            override fun onResponse(call: Call<Array<QuerySuggestion>>?, response: Response<Array<QuerySuggestion>>?) {
+            override fun onResponse(call: Call<List<QuerySuggestion>>?, response: Response<List<QuerySuggestion>>?) {
                 response?.let {
                     assert(it.isSuccessful)
 
@@ -130,13 +130,13 @@ class NetworkInstrumentedTests {
     @Test
     fun placeSuggestions() {
         val signal = CountDownLatch(1)
-        NetworkManager.placeSuggestionService.suggest("Longueuil", "CA", 5).enqueue(object : Callback<Array<PlaceSuggestion>> {
-            override fun onFailure(call: Call<Array<PlaceSuggestion>>?, t: Throwable?) {
+        NetworkManager.placeSuggestionService.suggest("Longueuil", "CA", 5, listOf("postcode", "place", "neighborhood")).enqueue(object : Callback<List<PlaceSuggestion>> {
+            override fun onFailure(call: Call<List<PlaceSuggestion>>?, t: Throwable?) {
                 t?.let { fail("onFailure message: ${t.message}") }
                 signal.countDown()
             }
 
-            override fun onResponse(call: Call<Array<PlaceSuggestion>>?, response: Response<Array<PlaceSuggestion>>?) {
+            override fun onResponse(call: Call<List<PlaceSuggestion>>?, response: Response<List<PlaceSuggestion>>?) {
                 response?.let {
                     assert(it.isSuccessful)
 
