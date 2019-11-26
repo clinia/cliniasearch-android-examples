@@ -20,6 +20,6 @@ interface PlaceSuggestionService {
 data class PlaceSuggestionRequest(
     val input: String = "",
     val country: String? = null,
-    val types: List<String>? = null,
+    val types: List<String>? = listOf("postcode", "place", "neighborhood"),
     val size: Int? = 5
 )

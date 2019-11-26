@@ -87,13 +87,7 @@ class SearchDataRepository {
 
     fun getPlaceSuggestions(request: PlaceSuggestionRequest): MutableLiveData<List<PlaceSuggestion>> {
         val data = MutableLiveData<List<PlaceSuggestion>>()
-
-        var types = listOf("postcode", "place", "neighborhood")
-        if (!request.types.isNullOrEmpty()) {
-            types = request.types
-        }
-
-        NetworkManager.placeSuggestionService.suggest(request.input, request.country, request.size, types).enqueue(object : Callback<List<PlaceSuggestion>> {
+        NetworkManager.placeSuggestionService.suggest(request.input, request.country, request.size, request.types).enqueue(object : Callback<List<PlaceSuggestion>> {
             override fun onFailure(call: Call<List<PlaceSuggestion>>?, t: Throwable?) {
                 t?.let { Log.e(this.javaClass.simpleName, "onFailure message: ${t.message}") }
             }
