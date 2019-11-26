@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.clinia.widgets.R
 import com.clinia.widgets.data.HealthFacility
+import com.clinia.widgets.data.SearchResponse
 import com.clinia.widgets.ui.main.CliniaViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -25,6 +27,8 @@ import kotlinx.android.synthetic.main.results_map.*
 class ResultsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private lateinit var viewModel: CliniaViewModel
     private var adapter: ResultAdapter? = null
+
+    var onMapMovedListener: OnMapMovedListener? = null
 
     private var map: GoogleMap? = null
     private var previousMarker: Marker? = null
@@ -51,6 +55,12 @@ class ResultsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
         }
         resultsMap.onCreate(savedInstanceState)
         resultsMap.getMapAsync(this)
+
+        map?.setOnCameraIdleListener {
+            onMapMovedListener?.onMapMoved(map!!.cameraPosition.target)?.observe(this, Observer {
+                adapter?.setData(it.records as MutableList<HealthFacility>)
+            })
+        }
 
         viewModel.getSearchData().observe(this, Observer {
             adapter?.setData(it.records as MutableList<HealthFacility>)
@@ -121,6 +131,10 @@ class ResultsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
     companion object {
         fun newInstance() = ResultsMapFragment()
     }
+}
+
+interface OnMapMovedListener {
+    fun onMapMoved(target: LatLng): LiveData<SearchResponse>
 }
 
 fun Marker.setActive(isActive: Boolean) =
