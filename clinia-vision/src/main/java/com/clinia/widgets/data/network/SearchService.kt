@@ -8,8 +8,7 @@ import com.squareup.moshi.ToJson
 import java.net.URLEncoder
 
 /**
- * Interface used to generate the Retrofit model for the Clinia Search API.
- *
+ * @suppress
  */
 interface SearchService {
     @POST("search/v1/indexes/health_facility/query?")
@@ -68,10 +67,7 @@ data class SingleIndexSearchRequest(
 )
 
 /**
- * The Query suggestion request format accepted by the Clinia Query Suggestion API
- *
- * @property indexName The index targeted by this search.
- * @property params URL encoded string containing the query, highlightPreTag, highlightPostTag and size
+ * @suppress
  */
 data class SingleIndexSearchRequestBodyJson(
     val indexName: String? = "",
@@ -79,8 +75,7 @@ data class SingleIndexSearchRequestBodyJson(
 )
 
 /**
- * Custom moshi adapter to create a QuerySuggestionRequestBodyJson Json Object from a QuerySuggestionRequest
- *
+ * @suppress
  */
 class SingleIndexAdapter {
     @ToJson

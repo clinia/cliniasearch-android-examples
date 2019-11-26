@@ -11,7 +11,7 @@ import com.clinia.widgets.data.QuerySuggestion
 import kotlinx.android.synthetic.main.view_autocomplete.view.*
 
 /**
- * The AutoComplete Widget to be used with the CliniaViewmodel to display query and location
+ * The AutoComplete Widget to be used with the CliniaViewModel to display query and location
  * suggestions to the user.
  *
  * @constructor

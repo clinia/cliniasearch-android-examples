@@ -7,14 +7,27 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * Repository through which to access Clinia's APIs.
+ */
 class SearchDataRepository(endPoint: String, appId: String, apiKey: String) {
 
+    /**
+     * @param prefixUrl Base endpoint.
+     * @param application Application id.
+     * @param apiKey Api key.
+     */
     init {
         NetworkManager.prefixURL = endPoint
         NetworkManager.application = appId
         NetworkManager.apiKey = apiKey
     }
 
+    /**
+     * Search exclusively inside the `Health Facility` index.
+     *
+     * @param request Request
+     */
     fun searchHealthFacilities(request: SingleIndexSearchRequest): MutableLiveData<SearchResponse> {
         val data = MutableLiveData<SearchResponse>()
         NetworkManager.searchService.searchHealthFacilities(request).enqueue(object : Callback<SearchResponse> {
@@ -34,6 +47,11 @@ class SearchDataRepository(endPoint: String, appId: String, apiKey: String) {
         return data
     }
 
+    /**
+     * Search exclusively inside the `Professionals` index.
+     *
+     * @param request Request
+     */
     fun searchProfessionals(request: SingleIndexSearchRequest): MutableLiveData<SearchResponse> {
         val data = MutableLiveData<SearchResponse>()
         NetworkManager.searchService.searchProfessionnals(request).enqueue(object : Callback<SearchResponse> {
@@ -53,6 +71,11 @@ class SearchDataRepository(endPoint: String, appId: String, apiKey: String) {
         return data
     }
 
+    /**
+     * Search in many indexes at a time.
+     *
+     * @param request Request
+     */
     fun search(request: MultiIndexesSearchRequest): MutableLiveData<MultiSearchResponse> {
         val data = MutableLiveData<MultiSearchResponse>()
         NetworkManager.searchService.search(request).enqueue(object : Callback<MultiSearchResponse> {
@@ -72,6 +95,11 @@ class SearchDataRepository(endPoint: String, appId: String, apiKey: String) {
         return data
     }
 
+    /**
+     * Get query suggestions based on an input.
+     *
+     * @param request Request
+     */
     fun getQuerySuggestions(request: QuerySuggestionRequest): MutableLiveData<List<QuerySuggestion>> {
         val data = MutableLiveData<List<QuerySuggestion>>()
         NetworkManager.querySuggestionService.suggest(request).enqueue(object : Callback<List<QuerySuggestion>> {
@@ -91,6 +119,11 @@ class SearchDataRepository(endPoint: String, appId: String, apiKey: String) {
         return data
     }
 
+    /**
+     * Get places suggestions based on an input
+     *
+     * @param request Request
+     */
     fun getPlaceSuggestions(request: PlaceSuggestionRequest): MutableLiveData<List<PlaceSuggestion>> {
         val data = MutableLiveData<List<PlaceSuggestion>>()
         NetworkManager.placeSuggestionService.suggest(request.input, request.country, request.size).enqueue(object : Callback<List<PlaceSuggestion>> {
