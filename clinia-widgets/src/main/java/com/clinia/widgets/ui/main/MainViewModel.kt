@@ -45,17 +45,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun querySuggest(
         query: String,
         preTag: String? = null,
-        postTag: String? = null
+        postTag: String? = null,
+        size: Int? = null
     ): LiveData<List<QuerySuggestion>> {
-        querySuggest(QuerySuggestionRequest(query, preTag, postTag))
+        querySuggest(QuerySuggestionRequest(query, preTag, postTag, size))
         return querySuggestions
     }
 
     fun placeSuggest(
         location: String,
-        country: String?
+        country: String?,
+        types: List<String>? = null,
+        size: Int? = null
     ): LiveData<List<PlaceSuggestion>> {
-        placeSuggest(PlaceSuggestionRequest(location, country))
+        placeSuggest(PlaceSuggestionRequest(location, country, types, size))
         return placeSuggestions
     }
 
