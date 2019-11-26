@@ -145,7 +145,6 @@ data class DailyHours(
     val start: String,
     val end: String
 ) {
-
     fun isOpenAtTime(time: Date): Boolean {
         val calendarStart = Calendar.getInstance()
         calendarStart.time = SimpleDateFormat("H:mm", Locale.getDefault()).parse(start)!!

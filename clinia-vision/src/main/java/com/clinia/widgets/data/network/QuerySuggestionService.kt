@@ -7,30 +7,29 @@ import retrofit2.http.*
 import java.net.URLEncoder
 
 /**
- * Interface used to generate the Retrofit model for the Suggestion Clinia API.
- *
+ * @suppress
  */
 interface QuerySuggestionService {
     @POST("search/v1/indexes/suggestions/query?")
     fun suggest(
             @Body body: QuerySuggestionRequest,
-            @Header("Content-Type") auth: String = contentType,
-            @Query("x-clinia-application-id") api: String = NetworkManager.application,
-            @Query("x-clinia-api-key") key: String = NetworkManager.apiKey
+            @Header("Content-Type") content: String = contentType,
+            @Query("x-clinia-application-id") appId: String = NetworkManager.application,
+            @Query("x-clinia-api-key") apiKey: String = NetworkManager.apiKey
     ): Call<List<QuerySuggestion>>
 }
 
 /**
  * The request body sent to get suggestions from the Query Suggestion API
  *
- * @param query The current input to be completed.
- * @param preTag The tag marking the start of the matching substring in the returned suggestions,
+ * @property query The current input to be completed.
+ * @property highlightPreTag The tag marking the start of the matching substring in the returned suggestions,
  * to be used for formatting. Can be an HTML tag.
- * @param postTag The tag marking the end of the matching substring in the returned suggestions,
+ * @property highlightPostTag The tag marking the end of the matching substring in the returned suggestions,
  * to be used for formatting. Can be an HTML tag.
- * @property size       Determines how many suggestions should be returned.
+ * @property size Determines the maximum number of suggestions that should be returned.
  */
-data class QuerySuggestionRequest(
+class QuerySuggestionRequest(
     val query: String = "",
     val highlightPreTag: String? = null,
     val highlightPostTag: String? = null,
@@ -38,17 +37,14 @@ data class QuerySuggestionRequest(
 )
 
 /**
- * The Query suggestion request format accepted by the Clinia Query Suggestion API
- *
- * @property params URL encoded string containing the query, highlightPreTag, highlightPostTag and size
+ * @suppress
  */
 data class  QuerySuggestionRequestBodyJson(
     val params: String
 )
 
 /**
- * Custom moshi adapter to create a QuerySuggestionRequestBodyJson Json Object from a QuerySuggestionRequest
- *
+ * @suppress
  */
 class QuerySuggestionAdapter {
     @ToJson

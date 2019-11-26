@@ -24,10 +24,6 @@ android {
             resValue("string", "apiKey", "${configuration.apiKey}")
             resValue("string", "endpoint", "${configuration.devEndpoint}")
 
-//            buildConfigField "String", "application", "\"${configuration.application}\""
-//            buildConfigField "String", "apiKey", "\"${configuration.apiKey}\""
-//            buildConfigField "String", "endpoint", "\"${configuration.prodEndpoint}\""
-
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

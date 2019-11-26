@@ -19,6 +19,9 @@ data class SearchResponse(
     val meta: Metadata
 )
 
+/**
+ * @suppress
+ */
 data class RecordJson(
     val id: String,
     val documentType: DocumentType,
@@ -37,6 +40,9 @@ data class RecordJson(
     val professions: List<String>? = null
 )
 
+/**
+ * @suppress
+ */
 class RecordAdapter {
     @ToJson
     fun toJson(r: Record): RecordJson {

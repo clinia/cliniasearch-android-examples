@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel = ViewModelProviders.of(this).get(CliniaViewModel::class.java)
-//        viewModel.setEnvironment(getString(R.string.application), getString(R.string.apiKey), getString(R.string.endpoint))
+
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED) {

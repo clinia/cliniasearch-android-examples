@@ -5,8 +5,7 @@ import retrofit2.Call
 import retrofit2.http.*
 
 /**
- * Interface used to generate the Retrofit model for the PlaceSuggestion Clinia API.
- *
+ * @suppress
  */
 interface PlaceSuggestionService {
     @GET("location/v1/autocomplete?")
@@ -28,7 +27,7 @@ interface PlaceSuggestionService {
  *
  * @property input      The current input that requires autocompletion.
  * @property country    Limits the suggestions to a single country. (e.g. 'CA'))
- * @property size       Determines how many suggestions should be returned.
+ * @property size       Determines the maximum number of suggestions that should be returned.
  */
 data class PlaceSuggestionRequest(
     val input: String = "",
