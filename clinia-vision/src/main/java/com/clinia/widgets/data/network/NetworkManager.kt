@@ -27,8 +27,17 @@ object NetworkManager {
     /**
      * Base url
      */
-    lateinit var prefixURL: String
-
+    var prefixURL: String = ""
+        set(value) {
+            field = value
+            retrofit = Retrofit.Builder()
+                .baseUrl(value)
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
+                .build()
+            searchService = retrofit.create(SearchService::class.java)
+            querySuggestionService = retrofit.create(QuerySuggestionService::class.java)
+            placeSuggestionService = retrofit.create(PlaceSuggestionService::class.java)
+        }
     /**
      * @suppress
      */
@@ -41,21 +50,18 @@ object NetworkManager {
     /**
      * @suppress
      */
-    private var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl(prefixURL)
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
-        .build()
+    private lateinit var retrofit: Retrofit
 
     /**
      * Search service
      */
-    var searchService: SearchService = retrofit.create(SearchService::class.java)
+    lateinit var searchService: SearchService
     /**
      * Query suggestions service
      */
-    var querySuggestionService: QuerySuggestionService = retrofit.create(QuerySuggestionService::class.java)
+    lateinit var querySuggestionService: QuerySuggestionService
     /**
      * Places suggestions service
      */
-    var placeSuggestionService: PlaceSuggestionService = retrofit.create(PlaceSuggestionService::class.java)
+    lateinit var placeSuggestionService: PlaceSuggestionService
 }
