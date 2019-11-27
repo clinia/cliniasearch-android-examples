@@ -48,6 +48,7 @@ buildscript {
                 apiKey: 'AAW3nfvI79tj4LzECYZSEbDP7lqBpFd5',
                 devEndpoint: 'https://api.partner.staging.clinia.ca/',
                 prodEndpoint: 'https://api.partner.clinia.ca/'
+
         ]
     }
 

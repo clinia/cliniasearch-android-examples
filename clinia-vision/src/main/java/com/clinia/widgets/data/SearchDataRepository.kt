@@ -10,7 +10,7 @@ import retrofit2.Response
 /**
  * Repository through which to access Clinia's APIs.
  */
-class SearchDataRepository(endPoint: String, appId: String, apiKey: String) {
+class SearchDataRepository(appId: String, apiKey: String, endPoint: String) {
 
     /**
      * @param prefixUrl Base endpoint.
@@ -126,7 +126,7 @@ class SearchDataRepository(endPoint: String, appId: String, apiKey: String) {
      */
     fun getPlaceSuggestions(request: PlaceSuggestionRequest): MutableLiveData<List<PlaceSuggestion>> {
         val data = MutableLiveData<List<PlaceSuggestion>>()
-        NetworkManager.placeSuggestionService.suggest(request.input, request.country, request.size).enqueue(object : Callback<List<PlaceSuggestion>> {
+        NetworkManager.placeSuggestionService.suggest(request.input, request.country, request.size, request.types).enqueue(object : Callback<List<PlaceSuggestion>> {
             override fun onFailure(call: Call<List<PlaceSuggestion>>?, t: Throwable?) {
                 t?.let { Log.e(this.javaClass.simpleName, "onFailure message: ${t.message}") }
             }
