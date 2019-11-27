@@ -38,7 +38,6 @@ object NetworkManager {
             querySuggestionService = retrofit.create(QuerySuggestionService::class.java)
             placeSuggestionService = retrofit.create(PlaceSuggestionService::class.java)
         }
-
     /**
      * @suppress
      */
