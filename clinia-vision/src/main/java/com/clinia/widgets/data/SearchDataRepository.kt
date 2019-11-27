@@ -10,7 +10,7 @@ import retrofit2.Response
 /**
  * Repository through which to access Clinia's APIs.
  */
-class SearchDataRepository(endPoint: String, appId: String, apiKey: String) {
+class SearchDataRepository(appId: String, apiKey: String, endPoint: String) {
 
     /**
      * @param prefixUrl Base endpoint.

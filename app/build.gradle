@@ -23,7 +23,7 @@ android {
 
             buildConfigField "String", "application", "\"${configuration.application}\""
             buildConfigField "String", "apiKey", "\"${configuration.apiKey}\""
-            buildConfigField "String", "endpoint", "\"${configuration.devEndPoint}\""
+            buildConfigField "String", "endpoint", "\"${configuration.devEndpoint}\""
         }
         release {
             minifyEnabled true
