@@ -21,14 +21,14 @@ class ResultsList @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : RecyclerView(context, attrs, defStyleAttr) {
 
-    lateinit var listener: OnLoadMoreListener
+    var listener: OnLoadMoreListener? = null
 
     init {
         this.addOnScrollListener(object : OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1)) {
-                    listener.onLoadMore()
+                    listener?.onLoadMore()
                 }
             }
         })
