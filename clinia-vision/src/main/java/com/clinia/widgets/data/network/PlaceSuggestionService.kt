@@ -14,8 +14,8 @@ interface PlaceSuggestionService {
             @Query("country") country: String?,
             @Query("limit") limit: Int?,
             @Query("types") types: List<String>?,
-            @Query("x-clinia-application-id") api: String = NetWorkManager.application,
-            @Query("x-clinia-api-key") key: String = NetWorkManager.apiKey,
+            @Query("x-clinia-application-id") api: String = NetworkManager.application,
+            @Query("x-clinia-api-key") key: String = NetworkManager.apiKey,
             @Header("Content-Type") auth: String = contentType
     ): Call<List<PlaceSuggestion>>
 }
