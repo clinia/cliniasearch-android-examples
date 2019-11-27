@@ -1,24 +1,27 @@
-# Clinia Search API Client for Android
+<div align="center">
+  <img src="./clinia-logo.svg" width="250">
+  <h1>Clinia Search API Client for Android</h1>
+  <h4>Android library that lets you create a health-care search experience using Clinia's search API.</h4>
+  <p>
+    <a href="#why">Why</a> •
+    <a href="#features">Features</a> •
+    <a href="#getting-started">Getting Started</a> •
+    <a href="#getting-help">Getting Help</a> •
+    <a href="#-license">License</a>
+  </p>
+</div>
 
-## Contributing
+# Why
+#### React Vision is the result of Clinia's effort to make its expertise more accessible to its partners. The Vision tools allow partners to create their own health-care search experience, for internal or external use, using Clinia's search API.
 
-[Your contributions](https://github.com/clinia/cliniasearch-client-android/pull/new) are welcome! Please use our [formatting configuration](https://github.com/clinia/CodingStyle#android) to keep the coding style consistent.
+# Features
 
-## API Documentation
+- `NetworkManager` allowing for communication with the Clinia APIs.
+- `CliniaViewModel` to access search data and the network manager methods inside the components.
+- Bare UI components allowing for fast integration in any application.
 
-1. **[Contributing](#contributing)**
-
-
-1. **[Install](#install)**
-
-
-1. **[Quick Start](#quick-start)**
-
-
-1. **[Search](#search)**
-
+# Getting Started
 ## Install
-
 Install the Android client by adding the following dependency to your `Gradle` build file.
 
 ```gradle
@@ -28,7 +31,6 @@ dependencies {
 ```
 
 ## Quick Start
-
 The first step is to add a your application ID and Clinia API keys to your app. 
 
 ```gradle
@@ -94,6 +96,10 @@ fun search(query: String, location: String) {
 }
 ```
 
-## Getting Help
+# Getting Help
 
-- **Found a bug?** You can open a [GitHub issue](https://github.com/clinia/cliniasearch-client-android/issues).
+**Found a bug?** You can open a [GitHub issue](https://github.com/clinia/cliniasearch-client-android/issues).
+
+# 📄 License
+
+Clinia Search API Client for Android is an open-sourced software licensed under the [MIT license](LICENSE).
