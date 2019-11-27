@@ -12,7 +12,7 @@ import com.clinia.widgets.R
 import com.clinia.widgets.data.HealthFacility
 import com.clinia.widgets.data.PlaceSuggestion
 import com.clinia.widgets.data.QuerySuggestion
-import com.clinia.widgets.ui.main.MainViewModel
+import com.clinia.widgets.ui.main.CliniaViewModel
 import com.clinia.widgets.ui.view.*
 import kotlinx.android.synthetic.main.main_fragment.*
 
@@ -20,7 +20,7 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener,
     LocationSearchBar.LocationSearchBarListener, AutoComplete.AutoCompleteListener,
     ResultsList.OnLoadMoreListener {
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: CliniaViewModel
 
     private var adapter: ResultAdapter? = null
 
@@ -42,7 +42,7 @@ class MainFragment : Fragment(), SearchBar.SearchBarListener,
         }
         resultsList.listener = this
         activity?.let {
-            viewModel = ViewModelProviders.of(it).get(MainViewModel::class.java)
+            viewModel = ViewModelProviders.of(it).get(CliniaViewModel::class.java)
             viewModel.getSearchData().observe(this, Observer { searchResponse ->
                 adapter?.setData(searchResponse.records as MutableList<HealthFacility>)
             })

@@ -1,0 +1,7 @@
+$dokka.format:gfm
+$dokka.linkExtension:md
+$dokka.location:com.clinia.widgets.ui.view$setActive(com.google.android.gms.maps.model.Marker, kotlin.Boolean)com.clinia.widgets.ui.view/com.google.android.gms.maps.model.-marker/set-active.md
+com.clinia.widgets.data
+com.clinia.widgets.data.network
+com.clinia.widgets.ui.main
+com.clinia.widgets.ui.view

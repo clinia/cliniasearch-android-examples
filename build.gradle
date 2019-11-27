@@ -23,21 +23,31 @@
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-buildscript { 
+buildscript {
     ext {
         versions = [
-                gradle: '3.5.2',
-                androidX: '2.1.0',
-                core_ktx: '1.1.0',
-                kotlin: '1.3.50',
+                gradle          : '3.5.2',
+                androidX        : '2.1.0',
+                core_ktx        : '1.1.0',
+                kotlin          : '1.3.60',
                 constraintLayout: '1.1.3',
-                recyclerView: '1.0.0-rc01',
-                appcompat: '1.1.0',
-                lifecycle: "2.0.0",
-                material: '1.2.0-alpha01',
-                retrofit: '2.6.2',
-                moshi: '1.8.0',
-                playServices: '17.0.0'
+                recyclerView    : '1.1.0',
+                appcompat       : '1.1.0',
+                lifecycle       : "2.0.0",
+                material        : '1.2.0-alpha02',
+                retrofit        : '2.6.2',
+                moshi           : '1.8.0',
+                playServices    : '17.0.0',
+                dokka           : '0.10.0',
+                nexus           : '0.5.3',
+                pegdown         : '1.3'
+        ]
+
+        configuration = [
+                application: 'TODO',
+                apiKey: 'AAW3nfvI79tj4LzECYZSEbDP7lqBpFd5',
+                devEndpoint: 'https://api.partner.staging.clinia.ca/',
+                prodEndpoint: "https://api.partner.clinia.ca/"
         ]
     }
 
@@ -47,21 +57,16 @@ buildscript {
     }
 
     dependencies {
-        classpath 'ch.raffael.pegdown-doclet:pegdown-doclet:1.3'
-        classpath 'com.android.tools.build:gradle:3.1.1'
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3"
-
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
-    }
-
-    dependencies {
         classpath "com.android.tools.build:gradle:${versions.gradle}"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${versions.dokka}"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
 
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}" }
+        classpath "ch.raffael.pegdown-doclet:pegdown-doclet:${versions.pegdown}"
+        classpath "com.android.tools.build:gradle:${versions.gradle}"
+        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:${versions.nexus}"
+    }
 }
 
 allprojects {
@@ -76,6 +81,7 @@ ext {
 }
 
 apply plugin: 'io.codearte.nexus-staging'
+apply plugin: 'org.jetbrains.dokka'
 
 nexusStaging {
     packageGroup = PUBLISH_GROUP_ID
@@ -84,4 +90,22 @@ nexusStaging {
     stagingProfileId = ''
     numberOfRetries = 3
     delayBetweenRetriesInMillis = 3000
+}
+
+dokka {
+    outputFormat = 'gfm'
+    outputDirectory = "$buildDir/javadoc"
+
+    subProjects = ['clinia-vision']
+
+    configuration {
+        includeNonPublic = false
+        skipDeprecated = false
+
+        reportUndocumented = true
+        skipEmptyPackages = true
+
+//        includes = ['packages.md', 'extra.md']
+//        samples = ['samples/basic.kt', 'samples/advanced.kt']
+    }
 }

@@ -18,8 +18,20 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
-        release {
+        debug {
             minifyEnabled false
+
+            buildConfigField "String", "application", "\"${configuration.application}\""
+            buildConfigField "String", "apiKey", "\"${configuration.apiKey}\""
+            buildConfigField "String", "endpoint", "\"${configuration.devEndpoint}\""
+        }
+        release {
+            minifyEnabled true
+
+            buildConfigField "String", "application", "\"${configuration.application}\""
+            buildConfigField "String", "apiKey", "\"${configuration.apiKey}\""
+            buildConfigField "String", "endpoint", "\"${configuration.prodEndpoint}\""
+
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -41,5 +53,5 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    implementation project(":clinia-widgets")
+    implementation project(':clinia-vision')
 }
