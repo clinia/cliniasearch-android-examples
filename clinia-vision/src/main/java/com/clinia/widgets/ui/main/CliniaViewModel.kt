@@ -19,7 +19,7 @@ import com.google.android.gms.location.LocationServices
  */
 class CliniaViewModel(application: Application) : AndroidViewModel(application) {
 
-    private lateinit var dataRepository: SearchDataRepository
+    private var dataRepository: SearchDataRepository
 
     var query: String = ""
     var locationQuery: String = ""
@@ -35,6 +35,8 @@ class CliniaViewModel(application: Application) : AndroidViewModel(application) 
             .lastLocation.addOnSuccessListener {
             lastLocation = it
         }
+
+        dataRepository = SearchDataRepository("", "KcLxBhVFP8ooPgQODlAxWqfNg657fTz9", "https://api.partner.clinia.ca")
     }
 
     /**
