@@ -9,7 +9,6 @@
         android:id="@+id/locationInputLayout"
         style="@style/AppTheme.SearchBar"
         app:startIconDrawable="@drawable/ic_my_location"
-        app:startIconTint="@color/colorAccent"
         app:endIconMode="custom"
         app:endIconDrawable="@drawable/ic_clear"
         app:endIconTint="@color/gray">
@@ -25,7 +24,6 @@
             android:inputType="textAutoComplete"
             android:maxLines="1"
             android:padding="@dimen/spacing_small"
-            android:textColorHint="@color/colorAccent"
             android:textSize="@dimen/font_large" />
     </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

@@ -20,18 +20,10 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
-
-            buildConfigField "String", "application", "\"${configuration.application}\""
-            buildConfigField "String", "apiKey", "\"${configuration.apiKey}\""
-            buildConfigField "String", "endpoint", "\"${configuration.endpoint}\""
         }
         release {
             minifyEnabled true
-
-            buildConfigField "String", "application", "\"${configuration.application}\""
-            buildConfigField "String", "apiKey", "\"${configuration.apiKey}\""
-            buildConfigField "String", "endpoint", "\"${configuration.endpoint}\""
-
+            
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

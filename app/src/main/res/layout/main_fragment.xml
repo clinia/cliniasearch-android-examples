@@ -28,7 +28,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchBar"
-        app:hintLocation="Current Location"
+        app:hintLocation="Location"
         app:tintLocation="@color/colorAccent" />
 
     <com.clinia.widgets.ui.view.ResultsList

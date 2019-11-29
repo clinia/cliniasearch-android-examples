@@ -9,6 +9,7 @@ import com.clinia.widgets.data.network.SingleIndexSearchRequest
 
 import org.junit.Test
 import org.junit.Assert.*
+import org.junit.Before
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,6 +23,13 @@ import kotlin.reflect.typeOf
  */
 @SmallTest
 class NetworkInstrumentedTests {
+    @Before
+    fun before() {
+        NetworkManager.prefixURL = "https://api.partner.staging.clinia.ca/"
+        NetworkManager.apiKey = "AAW3nfvI79tj4LzECYZSEbDP7lqBpFd5"
+        NetworkManager.application = ""
+    }
+
     @Test
     fun searchSingleIndexHealthFacility() {
         val signal = CountDownLatch(1)
