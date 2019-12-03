@@ -42,14 +42,6 @@ buildscript {
                 nexus           : '0.5.3',
                 pegdown         : '1.3'
         ]
-
-        configuration = [
-                application: 'TODO',
-                apiKey: 'AAW3nfvI79tj4LzECYZSEbDP7lqBpFd5',
-                devEndpoint: 'https://api.partner.staging.clinia.ca/',
-                prodEndpoint: 'https://api.partner.clinia.ca/'
-
-        ]
     }
 
     repositories {

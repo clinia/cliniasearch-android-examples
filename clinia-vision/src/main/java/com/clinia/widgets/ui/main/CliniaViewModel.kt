@@ -19,11 +19,11 @@ import com.google.android.gms.location.LocationServices
  */
 class CliniaViewModel(application: Application) : AndroidViewModel(application) {
 
-    private lateinit var dataRepository: SearchDataRepository
+    private var dataRepository: SearchDataRepository
 
     var query: String = ""
     var locationQuery: String = ""
-    private var lastLocation: Location? = null
+    var currentLocation: Location? = null
 
     private var searchData = MutableLiveData<SearchResponse>()
     private var searchMetadata = MutableLiveData<Metadata>()
@@ -31,14 +31,11 @@ class CliniaViewModel(application: Application) : AndroidViewModel(application) 
     private var placeSuggestions = MutableLiveData<List<PlaceSuggestion>>()
 
     init {
-        LocationServices.getFusedLocationProviderClient(application.baseContext)
-            .lastLocation.addOnSuccessListener {
-            lastLocation = it
-        }
+        dataRepository = SearchDataRepository("", "KcLxBhVFP8ooPgQODlAxWqfNg657fTz9", "https://api.partner.clinia.ca")
     }
 
     /**
-     * Reset the repository with the new environent variables.
+     * Reset the repository with the new environment variables.
      *
      * @param application Application id.
      * @param apiKey Api key.
@@ -50,21 +47,32 @@ class CliniaViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     /**
-     * Triggers a search with the saved search parameters stored inside the view model.
-     */
-    private fun search() {
-        search(query, locationQuery)
-    }
-
-
-    /**
      *  Gets the updated search data response after a search call to the API.
      *
      * @return LiveData containing a SearchResponse object
      */
     fun getSearchData(): LiveData<SearchResponse> {
-        search(query = query, location = lastLocation)
+        search(query, currentLocation)
         return searchData
+    }
+
+    /**
+     * Only used when setEnvironment is called.
+     */
+    private fun search() {
+        search(query, currentLocation)
+    }
+
+    private fun search(query: String?, location: Location?) {
+        val search: SingleIndexSearchRequest = if (location != null) {
+            SingleIndexSearchRequest(
+                query = query,
+                location = "${location.latitude}, ${location.longitude}"
+            )
+        } else {
+            SingleIndexSearchRequest(query = query, location = locationQuery)
+        }
+        loadData(search)
     }
 
     /**
@@ -102,28 +110,6 @@ class CliniaViewModel(application: Application) : AndroidViewModel(application) 
     ): LiveData<List<PlaceSuggestion>> {
         placeSuggest(PlaceSuggestionRequest(location, country, types, size))
         return placeSuggestions
-    }
-
-    private fun search(query: String?, location: Location?) {
-        val search: SingleIndexSearchRequest = if (location != null) {
-            SingleIndexSearchRequest(
-                query = query,
-                location = "${location.latitude}, ${location.longitude}"
-            )
-        } else {
-            SingleIndexSearchRequest(query = query, location = locationQuery)
-        }
-        loadData(search)
-    }
-
-    private fun search(query: String?, location: String?) {
-        location?.let {
-            if (it.isBlank() or it.isEmpty()) {
-                search(query = query, location = lastLocation)
-            } else {
-                loadData(SingleIndexSearchRequest(query = query, location = location))
-            }
-        }
     }
 
     /**
